@@ -6,18 +6,27 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
+#include "Camera.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 float mixValue = 0.0f;
+float lastX = SCR_WIDTH / 2.0f;
+float lastY = SCR_HEIGHT / 2.0f;
 
-float viewX = 0.0f;
-float viewZ = 0.0f;
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
+
+bool firstMouse = true;
+
+Camera camera;
 
 int main()
 {
@@ -185,9 +194,6 @@ int main()
 	glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 	model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
-	glm::mat4 view = glm::mat4(1.0f);
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-
     glm::mat4 projection;
 	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/ (float)SCR_HEIGHT, 0.1f, 100.0f);
 
@@ -207,6 +213,11 @@ int main()
         glm::vec3(1.5f,  0.2f, -1.5f),
         glm::vec3(-1.3f,  1.0f, -1.5f)
     };
+  
+
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 
     // render loop
     // -----------
@@ -239,12 +250,13 @@ int main()
         ourShader.setInt("ourTexture", 0);
         ourShader.setInt("texture2", 1);
         ourShader.setFloat("mixVal", mixValue);
-		unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+        ourShader.setMat4("transform", trans);
+		/*unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));*/
 
-        view = glm::translate(view, glm::vec3(viewX, 0.0f, viewZ));
-        
-		ourShader.setMat4("view", view);
+		projection = glm::perspective(glm::radians(camera.getFov()), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+
+		ourShader.setMat4("view", camera.GetViewMatrix());
 		ourShader.setMat4("projection", projection);
 
         glBindVertexArray(VAO);
@@ -254,7 +266,7 @@ int main()
             model = glm::translate(model, cubePositions[i]);
             float angle = 20.0f * i;
             if (i % 3 == 0) {
-				angle = glfwGetTime() * 25.0f;
+				angle = (float)glfwGetTime() * 25.0f;
             }
             model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
             ourShader.setMat4("model", model);
@@ -262,8 +274,11 @@ int main()
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
        /* glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);*/
-		viewZ = 0.0f;
-		viewX = 0.0f;
+		
+
+		float currentFrame = (float)glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -287,6 +302,7 @@ int main()
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow* window)
 {
+
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
@@ -303,22 +319,38 @@ void processInput(GLFWwindow* window)
         }
 	}
 	else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		viewZ = 0.001f;
+        camera.processKeyboar(Camera_Movement::FORWARD, deltaTime);
 	}
 	else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		viewZ = -0.01f;
+        camera.processKeyboar(Camera_Movement::BACKWARD, deltaTime);
 	}
 	else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		viewX = 0.001f;
+        camera.processKeyboar(Camera_Movement::LEFT, deltaTime);
 	}
 	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		viewX = -0.001f;
+        camera.processKeyboar(Camera_Movement::RIGHT, deltaTime);
 	}
-    else if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
-        mixValue = 0.0f;
-        viewX = 0.0f;
-        viewZ = 0.0f;
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    if (firstMouse) {
+        lastX = (float)xpos;
+        lastY = (float)ypos;
+        firstMouse = false;
     }
+
+	float xOffset = (float)xpos - lastX;
+	float yOffset = lastY - (float)ypos;
+	lastX = (float)xpos;
+	lastY = (float)ypos;
+
+	camera.processMouse(xOffset, yOffset);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	camera.processScroll((float)yoffset);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
