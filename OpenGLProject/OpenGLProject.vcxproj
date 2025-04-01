@@ -141,17 +141,22 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\..\external\src\glad.c" />
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Box.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Drawable.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.fs" />

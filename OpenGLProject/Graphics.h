@@ -7,6 +7,9 @@
 #include "memory"
 #include <vector>
 #include <GLFW/glfw3.h>
+#include "Box.h"
+
+
 
 class Graphics
 {
@@ -17,17 +20,12 @@ public:
 
 public:
 	Camera camera;
+	Box box;
+
 private:
-	std::vector<float> vertices;
-	unsigned int VBO = 0, VAO = 0;
-	unsigned int texture1 = 0;
-	unsigned int SCR_WIDTH;
-	unsigned int SCR_HEIGHT;
+	unsigned int SCR_WIDTH = 0;
+	unsigned int SCR_HEIGHT = 0;
 
-	glm::mat4 model;
-	glm::mat4 projection;
-
-	std::unique_ptr<Shader> pShader;
-
+	glm::mat4 projection = glm::mat4(1.0f);
 };
 
