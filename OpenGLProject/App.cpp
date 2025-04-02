@@ -43,6 +43,11 @@ int App::Init()
 
 	graphics = Graphics(SCR_WIDTH, SCR_HEIGHT);
 
+    objects.push_back(std::make_unique<Box>());
+    objects.back()->Init();
+    objects.back()->setShaders("shader.vs", "shader.fs");
+    objects.back()->addTexture("..\\images\\blue_ice.jpg");
+
 	return 0;
 }
 
@@ -52,7 +57,7 @@ void App::Run()
 	{
         ProcessInput();
 		
-		graphics.Draw();
+        DrawScene();
         float currentFrame = (float)glfwGetTime();
         deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
@@ -87,5 +92,22 @@ void App::ProcessInput()
     }
     else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         graphics.camera.processKeyboar(Camera_Movement::RIGHT, deltaTime);
+    }
+}
+
+void App::DrawScene()
+{
+    graphics.ClearScreen();
+
+    glm::mat4 view = graphics.camera.GetViewMatrix();
+
+    projection = glm::perspective(glm::radians(graphics.camera.getFov()), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+    for (int i = 0; i < objects.size(); i++)
+    {
+
+        glm::mat4 trans = glm::mat4(1.0f);
+        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(1.0f, 0.0f, 0.5f));
+
+        objects[i]->draw(trans, projection, view);
     }
 }

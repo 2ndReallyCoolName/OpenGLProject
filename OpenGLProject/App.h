@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "Graphics.h"
+#include "Box.h"
 
 class App
 {
@@ -21,6 +22,9 @@ private:
 	static void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
 	}
+
+	void DrawScene();
+
 public:
 	int status = -1;
 	bool firstMouse = true;
@@ -38,4 +42,9 @@ private:
 private:
 	GLFWwindow* window;
 	Graphics graphics;
+
+	glm::mat4 projection = glm::mat4(1.0f);
+
+private:
+	std::vector<std::unique_ptr<Drawable<Box>>> objects;
 };

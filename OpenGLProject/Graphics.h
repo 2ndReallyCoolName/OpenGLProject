@@ -16,7 +16,7 @@ class Graphics
 public:
 	Graphics() = default;
 	Graphics(unsigned int screen_width, unsigned int screen_height);
-	void Draw();
+	void ClearScreen();
 
 public:
 	Camera camera;
@@ -25,7 +25,5 @@ public:
 private:
 	unsigned int SCR_WIDTH = 0;
 	unsigned int SCR_HEIGHT = 0;
-
-	glm::mat4 projection = glm::mat4(1.0f);
 };
 
