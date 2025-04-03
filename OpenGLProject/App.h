@@ -46,5 +46,5 @@ private:
 	glm::mat4 projection = glm::mat4(1.0f);
 
 private:
-	std::vector<std::unique_ptr<Drawable<Box>>> objects;
+	std::vector<std::unique_ptr<class DrawableBase>> objects;
 };

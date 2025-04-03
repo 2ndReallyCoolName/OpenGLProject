@@ -44,9 +44,20 @@ int App::Init()
 	graphics = Graphics(SCR_WIDTH, SCR_HEIGHT);
 
     objects.push_back(std::make_unique<Box>());
-    objects.back()->Init();
     objects.back()->setShaders("shader.vs", "shader.fs");
     objects.back()->addTexture("..\\images\\blue_ice.jpg");
+
+
+    objects.push_back(std::make_unique<Box>());
+    objects.back()->setModel(std::move(glm::translate(glm::mat4(1.0f), glm::vec3(0.7, 0.1, 0.1))));
+    objects.back()->setShaders("shader.vs", "shader.fs");
+    objects.back()->addTexture("..\\images\\paper.jpg");
+
+    objects.push_back(std::make_unique<Box>());
+    objects.back()->setModel(std::move(glm::translate(glm::mat4(1.0f), glm::vec3(0.1, 0.7, 0.2))));
+    objects.back()->setShaders("shader.vs", "shader.fs");
+    objects.back()->addTexture("..\\images\\wall.jpg");
+
 
 	return 0;
 }

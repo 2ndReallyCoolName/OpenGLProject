@@ -4,6 +4,7 @@ Box::Box()
 {
     if (!staticInitialized) {
         createVertices();
+        Init();
     }
 }
 

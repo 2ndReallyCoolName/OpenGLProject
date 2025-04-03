@@ -20,7 +20,6 @@ public:
 
 public:
 	Camera camera;
-	Box box;
 
 private:
 	unsigned int SCR_WIDTH = 0;

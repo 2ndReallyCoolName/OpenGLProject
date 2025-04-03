@@ -1,46 +1,29 @@
 #pragma once
 #include <vector>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include "Shader.h"
-#include "Texture.h"
+#include "DrawableBase.h"
+
 
 template <class T>
-class Drawable {
+class Drawable : public DrawableBase {
 public:
 	Drawable() = default;
-	virtual void Init() = 0;
 
-	unsigned int addTexture(std::string fpath) {
-		textures.push_back(Texture(fpath));
-		return textures.back().GetTextureID();
-	}
+	virtual unsigned int addTexture(std::string fpath) = 0;
 
 	void setModel(glm::mat4&& _model) {
 		model = _model;
 	}
 
-	void  setShaders(std::string vertexShader, std::string fragmentShader) {
-		pShader = std::make_unique<Shader>(vertexShader.c_str(), fragmentShader.c_str());
-	}
+	virtual void  setShaders(std::string vertexShader, std::string fragmentShader) = 0;
 
 	void bind() {
 		glBindVertexArray(VAO);
 	}
 
 
-	void useShader() {
-		pShader->use();
-		pShader->setMat4("model", model);
-		for(unsigned int i = 0; i < textures.size(); i++)
-			pShader->setInt("texture" + std::to_string(i), i);
-	}
+	virtual void useShader() = 0;
 
-	void BindTextures() {
-		for (unsigned int i = 0; i < textures.size(); i++)
-			textures[i].BindTexture(i);
-	}
+	virtual void BindTextures() = 0;
 
 	virtual void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view) = 0;
 
@@ -48,13 +31,7 @@ protected:
 	
 	virtual void createVertices() = 0;
 
-	Shader* getShader() { return pShader.get(); }
-
 protected:
-	glm::mat4 model = glm::mat4(1.0f);
-	std::unique_ptr<Shader> pShader;
-	std::vector<Texture> textures;
-
 	static unsigned int VBO;
 	static unsigned int VAO;
 	static unsigned int EBO;
