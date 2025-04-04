@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "DrawableBase.h"
-
+#include "GLErrorHandling.h"
 
 template <class T>
 class Drawable : public DrawableBase {

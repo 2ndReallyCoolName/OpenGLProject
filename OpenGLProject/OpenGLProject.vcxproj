@@ -154,6 +154,7 @@
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Drawable.h" />
+    <ClInclude Include="GLErrorHandling.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />

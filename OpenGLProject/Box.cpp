@@ -1,5 +1,6 @@
 #include "Box.h"
 
+
 Box::Box()
 {
     if (!staticInitialized) {
@@ -12,24 +13,24 @@ void Box::Init()
 {
     if (!staticInitialized) {
 
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-        glGenBuffers(1, &EBO);
+        GLCall(glGenVertexArrays(1, &VAO));
+        GLCall(glGenBuffers(1, &VBO));
+        GLCall(glGenBuffers(1, &EBO));
 
-        glBindVertexArray(VAO);
+        GLCall(glBindVertexArray(VAO));
 
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+        GLCall(glBindBuffer(GL_ARRAY_BUFFER, VBO));
+        GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), &vertices[0], GL_STATIC_DRAW));
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
+        GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
+        GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW));
 
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
+        GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0));
+        GLCall(glEnableVertexAttribArray(0));
 
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-        glEnableVertexAttribArray(1);
+        GLCall(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))));
+        GLCall(glEnableVertexAttribArray(1));
     }
 
     staticInitialized = true;
@@ -44,9 +45,9 @@ void Box::draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view
     getShader()->setMat4("view", view);
     getShader()->setMat4("projection", projection);
 
-	glBindVertexArray(VAO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+    GLCall(glBindVertexArray(VAO));
+    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
+    GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
 }
 
 void Box::createVertices()
