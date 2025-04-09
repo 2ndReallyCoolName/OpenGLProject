@@ -63,6 +63,9 @@
     <ClCompile Include="..\..\..\..\external\src\glad.c">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="GLErrorHandling.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

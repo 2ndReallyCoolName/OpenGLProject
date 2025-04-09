@@ -4,10 +4,10 @@
 #include "Texture.h"
 
 
-class Box : public Drawable<Box> 
+class Sphere : public Drawable<Sphere>
 {
 public:
-	Box();
+	Sphere(unsigned int m, unsigned int n);
 	void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view) override;
 
 	void  setShaders(std::string vertexShader, std::string fragmentShader) {
@@ -35,6 +35,7 @@ public:
 
 private:
 	void createVertices() override;
+	void createVertices(unsigned int m, unsigned int n);
 
 private:
 	std::unique_ptr<Shader> pShader;

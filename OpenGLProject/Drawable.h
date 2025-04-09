@@ -8,6 +8,32 @@ class Drawable : public DrawableBase {
 public:
 	Drawable() = default;
 
+	void Init() {
+		if (!staticInitialized) {
+
+			GLCall(glGenVertexArrays(1, &VAO));
+			GLCall(glGenBuffers(1, &VBO));
+			GLCall(glGenBuffers(1, &EBO));
+
+			GLCall(glBindVertexArray(VAO));
+
+			GLCall(glBindBuffer(GL_ARRAY_BUFFER, VBO));
+			GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), &vertices[0], GL_STATIC_DRAW));
+
+			GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
+			GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW));
+
+
+			GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0));
+			GLCall(glEnableVertexAttribArray(0));
+
+			GLCall(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))));
+			GLCall(glEnableVertexAttribArray(1));
+		}
+
+		staticInitialized = true;
+	}
+
 	virtual unsigned int addTexture(std::string fpath) = 0;
 
 	void setModel(glm::mat4&& _model) {
