@@ -30,77 +30,68 @@ void Sphere::createVertices(unsigned int m, unsigned int n)
 {
 	assert(m >= 2 && n >= 1);
 
-	float u_tip[] = {0.0f, 1.0f, 0.0f, 0.5f, 0.0f}; // top tip
-	const float l_tip[] = { 0.0f, -1.0f, 0.0f, 0.5f, 1.0f }; // bottom tip
 	const float long_angle = 2 * pi / m, lat_angle = 2 * pi / n;
 
-	vertices.reserve(5 * (m * n + 2));
+	vertices.reserve(5 * ((m+1) * (n)));
 
 	float theta = 0.0f, phi = 0.0f;
 	
-	float m_dv = 2*pi / m, n_div = 2*pi / n;
+	float m_dv = 2*pi / m, n_div = pi / n;
+	float tc_x = 0.0f;
 
-	for (int i = 0; i < m; i++)
+	for (int j = 0; j <= n; j++)
 	{
-		theta = i * m_dv;
-		for (int j = 0; j < n; j++)
+		phi = j * n_div;
+		for (int i = 0; i <= m; i++)
 		{
-			phi = j * n_div;
+			tc_x = (float)i / (m * 1.0f);
+			theta = i * m_dv;
 			float x = cos(theta) * sin(phi);
 			float y = sin(theta) * sin(phi);
+
+			if (i == m) {
+				theta = (i-1)*m_dv;
+				x = cos(0) * sin(phi);
+				y = sin(0) * sin(phi);
+				tc_x = 1.0f;
+			}
+
 			float z = cos(phi);
+			
 
 			// Vertex coordinates
 			vertices.push_back(x);
 			vertices.push_back(y);
 			vertices.push_back(z);
 
+
 			// Texture coordinates
-			vertices.push_back(x);
-			vertices.push_back(y);
+			vertices.push_back(tc_x);
+			vertices.push_back((float)j / (n * 1.0f));
 		}
 	}
 
-	vertices.insert(vertices.end(), u_tip, u_tip + 5);
-	vertices.insert(vertices.end(), l_tip, l_tip + 5);
+	indices.reserve(3 * ((m+1) * (n)));
 
-	const auto ilCenter = (unsigned int)(m * n);
-	const auto iuCenter = ilCenter + 1;
+	unsigned short end = (m+1) * (n);
 
-	indices.reserve(3 * (m*2 + 2*m * (n -1)));
-
-	unsigned short end = m * (n - 1);
 	unsigned short j = 0;
-
-	// l tip indices
-	for (unsigned short iLong = 0; iLong < m; iLong++) {
-		indices.push_back(ilCenter);
-		indices.push_back((iLong + 1) % m);
-		indices.push_back(iLong);
-	}
 	 
 	// Sphere indices
 	for (unsigned short iLong = 0; iLong < end; iLong++) {
-		if (iLong != 0 && iLong % m == 0) {
+		if (iLong != 0 && iLong % (m+1) == 0) {
 			j += 1;
 		}
 
-		unsigned short factor = m * j;
+		unsigned short factor = (m+1) * j;
 
 		indices.push_back(iLong);
-		indices.push_back(((iLong + 1) % m) + factor);
-		indices.push_back(iLong + m);
+		indices.push_back(((iLong + 1) % (m+1)) + factor);
+		indices.push_back(iLong + (m+1));
 
-		indices.push_back(((iLong + 1) % m) + factor);
-		indices.push_back(((iLong + 1) % m) + factor + 1);
-		indices.push_back(iLong + m);
-	}
-
-	// u tip indices
-	for (unsigned short iLong = end; iLong < m+end; iLong++) {
-		indices.push_back(iuCenter);
-		indices.push_back(iLong);
-		indices.push_back((iLong + 1) % m);
+		indices.push_back(((iLong + 1) % (m+1)) + factor);
+		indices.push_back((((iLong + 1) % (m+1)) + factor)+(m+1));
+		indices.push_back(iLong + (m+1));
 	}
 	
 }

@@ -1,5 +1,5 @@
 #include "App.h"
-
+constexpr double pi = 3.14159265358979323846;
 
 App::App(unsigned int screen_width, unsigned int screen_height, std::string title)
 	: SCR_WIDTH(screen_width), SCR_HEIGHT(screen_height)
@@ -53,10 +53,15 @@ int App::Init()
     //objects.back()->setShaders("shader.vs", "shader.fs");
     //objects.back()->addTexture("..\\images\\paper.jpg");
 
-    objects.push_back(std::make_unique<Sphere>(20, 20));
+    /*objects.push_back(std::make_unique<Sphere>(20, 14));
     objects.back()->setModel(std::move(glm::translate(glm::mat4(1.0f), glm::vec3(0.1, 0.7, 0.2))));
     objects.back()->setShaders("shader.vs", "shader.fs");
-    objects.back()->addTexture("..\\images\\wall.jpg");
+    objects.back()->addTexture("..\\images\\wall.jpg");*/
+
+    objects.push_back(std::make_unique<Sphere>(30, 24));
+    objects.back()->setModel(std::move(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0.3, 0.7, 0.2)), (float)(3.5*pi/2), glm::vec3(1.0f, 0.0f,0.0f))));
+    objects.back()->setShaders("shader.vs", "shader.fs");
+    objects.back()->addTexture("..\\images\\earth.jpg");
 
 
 	return 0;
@@ -117,7 +122,7 @@ void App::DrawScene()
     {
 
         glm::mat4 trans = glm::mat4(1.0f);
-        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(1.0f, 0.0f, 0.5f));
+        trans = glm::rotate(trans, 0.8f*(float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 0.5f));
 
         objects[i]->draw(trans, projection, view);
     }

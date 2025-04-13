@@ -4,7 +4,7 @@
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
-App app(800, 600, "OpenGL Project");
+App app(1400, 900, "OpenGL Project");
 
 int main()
 {
