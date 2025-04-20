@@ -142,6 +142,7 @@
     <ClCompile Include="..\..\..\..\external\src\glad.c" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="DrawableBase.h" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="App.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Cylinder.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="GLErrorHandling.h" />
     <ClInclude Include="Graphics.h" />

@@ -8,7 +8,7 @@ class Drawable : public DrawableBase {
 public:
 	Drawable() = default;
 
-	void Init() {
+	virtual void Init() {
 		if (!staticInitialized) {
 
 			GLCall(glGenVertexArrays(1, &VAO));

@@ -58,10 +58,10 @@ int App::Init()
     objects.back()->setShaders("shader.vs", "shader.fs");
     objects.back()->addTexture("..\\images\\wall.jpg");*/
 
-    objects.push_back(std::make_unique<Sphere>(30, 24));
+    objects.push_back(std::make_unique<Cylinder>(35, 22));
     objects.back()->setModel(std::move(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0.3, 0.7, 0.2)), (float)(3.5*pi/2), glm::vec3(1.0f, 0.0f,0.0f))));
     objects.back()->setShaders("shader.vs", "shader.fs");
-    objects.back()->addTexture("..\\images\\earth.jpg");
+    objects.back()->addTexture("..\\images\\wood_planks.jpg");
 
 
 	return 0;

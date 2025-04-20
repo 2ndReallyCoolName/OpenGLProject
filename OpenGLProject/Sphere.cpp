@@ -30,8 +30,6 @@ void Sphere::createVertices(unsigned int m, unsigned int n)
 {
 	assert(m >= 2 && n >= 1);
 
-	const float long_angle = 2 * pi / m, lat_angle = 2 * pi / n;
-
 	vertices.reserve(5 * ((m+1) * (n)));
 
 	float theta = 0.0f, phi = 0.0f;
@@ -93,5 +91,4 @@ void Sphere::createVertices(unsigned int m, unsigned int n)
 		indices.push_back((((iLong + 1) % (m+1)) + factor)+(m+1));
 		indices.push_back(iLong + (m+1));
 	}
-	
 }

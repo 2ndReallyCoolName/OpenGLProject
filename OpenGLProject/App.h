@@ -5,6 +5,7 @@
 #include "Graphics.h"
 #include "Box.h"
 #include "Sphere.h"
+#include "Cylinder.h"
 
 class App
 {
