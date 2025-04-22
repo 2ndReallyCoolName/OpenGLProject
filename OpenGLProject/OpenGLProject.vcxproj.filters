@@ -67,7 +67,13 @@
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
     <ClCompile Include="Cylinder.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="TexturedSphere.cpp">
+      <Filter>Source Files\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,14 +101,20 @@
     <ClInclude Include="stb_image.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="GLErrorHandling.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sphere.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="Cylinder.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="GLErrorHandling.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TexturedSphere.h">
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +122,12 @@
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="shader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="lightShader.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="lightShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>

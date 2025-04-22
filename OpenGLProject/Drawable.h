@@ -54,7 +54,7 @@ public:
 	virtual void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view) = 0;
 
 protected:
-	
+
 	virtual void createVertices() = 0;
 
 protected:
