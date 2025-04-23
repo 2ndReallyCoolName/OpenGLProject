@@ -130,5 +130,8 @@
     <None Include="lightShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="lightObjectShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

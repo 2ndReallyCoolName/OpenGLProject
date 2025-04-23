@@ -53,6 +53,19 @@ public:
 
 	virtual void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view) = 0;
 
+	void SetColor(float r, float g, float b, float a) {
+		this->color[0] = r;
+		this->color[1] = g;
+		this->color[2] = b;
+		this->color[3] = a;
+	}
+
+	void SetLightColor(float r, float g, float b) {
+	}
+
+	void SetLightColor(float color[]) {
+
+	}
 protected:
 
 	virtual void createVertices() = 0;
@@ -62,9 +75,12 @@ protected:
 	static unsigned int VAO;
 	static unsigned int EBO;
 
+
 	static std::vector<float> vertices;
 	static std::vector<unsigned int> indices;
 	static bool staticInitialized;
+
+	std::vector<float> color = { 1.0f, 1.0f, 1.0f, 1.0f };
 };
 
 template<class T>

@@ -169,6 +169,7 @@
     <ClInclude Include="TexturedSphere.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="lightObjectShader.fs" />
     <None Include="lightShader.fs" />
     <None Include="lightShader.vs" />
     <None Include="shader.fs" />

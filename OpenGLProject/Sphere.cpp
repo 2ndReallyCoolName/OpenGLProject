@@ -14,6 +14,7 @@ void Sphere::draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& v
 	getShader()->setMat4("trans", transformation);
 	getShader()->setMat4("view", view);
 	getShader()->setMat4("projection", projection);
+	getShader()->setFloat4("objectColor", color);
 
 	GLCall(glBindVertexArray(VAO));
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
