@@ -69,8 +69,7 @@ int App::Init()
     objects.back()->setShaders("lightShader.vs", "lightObjectShader.fs");
 
 
-
-	light = std::make_unique<Light>();
+	light = std::make_unique<Light>(0.0f, 0.5f, 0.5f);
 
 
 	return 0;
@@ -139,7 +138,7 @@ void App::DrawScene()
 
         trans = glm::rotate(trans, 0.8f*(float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 0.5f));
 
-		objects[i]->SetLightColor(&light->GetLightColor()[0]);
+		objects[i]->SetLightColor(&(light->GetLightColor()[0]));
         objects[i]->draw(trans, projection, view);
     }
 }

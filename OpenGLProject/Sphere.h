@@ -40,8 +40,7 @@ protected:
 	void createVertices() override;
 	void createVertices(unsigned int m, unsigned int n);
 
-	std::vector<float> color = { 1.0f, 1.0f, 1.0f, 1.0f };
-
+	
 private:
 	std::unique_ptr<Shader> pShader;
 };
