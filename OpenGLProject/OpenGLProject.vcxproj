@@ -172,6 +172,8 @@
     <None Include="lightObjectShader.fs" />
     <None Include="lightShader.fs" />
     <None Include="lightShader.vs" />
+    <None Include="normalColorShader.fs" />
+    <None Include="normalColorShader.vs" />
     <None Include="shader.fs" />
     <None Include="shader.vs" />
   </ItemGroup>

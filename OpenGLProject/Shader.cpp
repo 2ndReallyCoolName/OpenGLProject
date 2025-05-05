@@ -106,3 +106,14 @@ void Shader::setFloat4(const std::string& name, std::vector<float>& v) const
 	assert(v.size() == 4);
 	glUniform4f(glGetUniformLocation(ID, name.c_str()), v[0], v[1], v[2], v[3]);
 }
+
+void Shader::setFloat3(const std::string& name, std::vector<float>& v) const
+{
+	assert(v.size() == 3);
+	glUniform3f(glGetUniformLocation(ID, name.c_str()), v[0], v[1], v[2]);
+}
+
+void Shader::setFloat3(const std::string& name, float r, float g, float b) const
+{
+	glUniform3f(glGetUniformLocation(ID, name.c_str()), r, g, b);
+}

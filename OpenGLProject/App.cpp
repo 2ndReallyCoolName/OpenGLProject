@@ -63,13 +63,14 @@ int App::Init()
     objects.back()->setShaders("shader.vs", "shader.fs");
     objects.back()->addTexture("..\\images\\wood_planks.jpg");*/
 
-    objects.push_back(std::make_unique<Sphere>(35, 22));
+    objects.push_back(std::make_unique<Sphere>(35, 22, true));
     objects.back()->SetColor(1.0f, 0.5f, 0.31f, 1.0f);
     objects.back()->setModel(std::move(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0.3, 0.7, 0.2)), (float)(3.5*pi/2), glm::vec3(1.0f, 0.0f,0.0f))));
-    objects.back()->setShaders("lightShader.vs", "lightObjectShader.fs");
+    /*objects.back()->setShaders("lightShader.vs", "lightObjectShader.fs");*/
+    objects.back()->setShaders("normalColorShader.vs", "normalColorShader.fs");
 
 
-	light = std::make_unique<Light>(0.0f, 0.5f, 0.5f);
+	light = std::make_unique<Light>(1.0f, 1.0f, 1.0f);
 
 
 	return 0;
@@ -128,7 +129,9 @@ void App::DrawScene()
 
     projection = glm::perspective(glm::radians(graphics.camera.getFov()), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
-    glm::mat4 trans = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5.5f, 4.0f));
+    glm::mat4 trans = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5.5f, 7.0f));
+
+    glm::vec3 lightPos = light->GetPosition();
 
 	light->draw(trans, projection, view);
 
@@ -139,6 +142,6 @@ void App::DrawScene()
         trans = glm::rotate(trans, 0.8f*(float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 0.5f));
 
 		objects[i]->SetLightColor(&(light->GetLightColor()[0]));
-        objects[i]->draw(trans, projection, view);
+        objects[i]->draw(trans, projection, view, lightPos);
     }
 }

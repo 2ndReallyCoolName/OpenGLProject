@@ -52,6 +52,7 @@ public:
 	virtual void BindTextures() = 0;
 
 	virtual void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view) = 0;
+	virtual void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view, glm::vec3& lightPos) = 0;
 
 	void SetColor(float r, float g, float b, float a) {
 		this->color[0] = r;
@@ -69,6 +70,8 @@ public:
 protected:
 
 	virtual void createVertices() = 0;
+	virtual void createNormalVertices() = 0;
+
 
 protected:
 	static unsigned int VBO;

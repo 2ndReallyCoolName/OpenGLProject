@@ -7,9 +7,10 @@
 class Sphere : public Drawable<Sphere>
 {
 public:
-	Sphere(unsigned int m, unsigned int n);
+	Sphere(unsigned int m, unsigned int n, bool normal);
 	void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view) override;
-
+	void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view, glm::vec3& lightPos) override;
+	
 	void  setShaders(std::string vertexShader, std::string fragmentShader) {
 		pShader = std::make_unique<Shader>(vertexShader.c_str(), fragmentShader.c_str());
 	}
@@ -37,8 +38,12 @@ public:
 
 protected:
 	void Init() override;
+	void InitBasic();
 	void createVertices() override;
 	void createVertices(unsigned int m, unsigned int n);
+
+	void createNormalVertices() override;
+	void createNormalVertices(unsigned int m, unsigned int n);
 
 	
 private:

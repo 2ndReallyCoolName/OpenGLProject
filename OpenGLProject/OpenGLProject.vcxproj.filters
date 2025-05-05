@@ -133,5 +133,11 @@
     <None Include="lightObjectShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="normalColorShader.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="normalColorShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

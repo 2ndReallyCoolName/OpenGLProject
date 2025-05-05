@@ -19,4 +19,6 @@ public:
 	void setMat4(const std::string& name, glm::mat4 value) const;
 	void setFloat4(const std::string& name, float r, float g, float b, float a) const;
 	void setFloat4(const std::string& name, std::vector<float>& v) const;
+	void setFloat3(const std::string& name, std::vector<float>& v) const;
+	void setFloat3(const std::string& name, float r, float g, float b) const;
 };

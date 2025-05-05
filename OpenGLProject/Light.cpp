@@ -4,7 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 Light::Light(float r, float g, float b)
-	: Sphere(30, 30)
+	: Sphere(30, 30, true)
 {
 	color[0] = r;
 	color[1] = g;
@@ -14,13 +14,15 @@ Light::Light(float r, float g, float b)
 }
 
 Light::Light()
-	: Sphere(30, 30)
+	: Sphere(30, 30, true)
 {
 	Initialize();
 }
 
 void Light::draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view)
 {
+
+	position = transformation * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	useShader();
 
 	getShader()->setMat4("trans", transformation);
