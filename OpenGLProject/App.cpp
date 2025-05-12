@@ -108,15 +108,31 @@ void App::ProcessInput()
     }
     else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         graphics.camera.processKeyboar(Camera_Movement::FORWARD, deltaTime);
+        for (int i = 0; i < objects.size(); i++)
+        {
+			objects[i]->setViewPos(graphics.camera.getCameraPos());
+        }
     }
     else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
         graphics.camera.processKeyboar(Camera_Movement::BACKWARD, deltaTime);
+        for (int i = 0; i < objects.size(); i++)
+        {
+            objects[i]->setViewPos(graphics.camera.getCameraPos());
+        }
     }
     else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         graphics.camera.processKeyboar(Camera_Movement::LEFT, deltaTime);
+        for (int i = 0; i < objects.size(); i++)
+        {
+            objects[i]->setViewPos(graphics.camera.getCameraPos());
+        }
     }
     else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         graphics.camera.processKeyboar(Camera_Movement::RIGHT, deltaTime);
+        for (int i = 0; i < objects.size(); i++)
+        {
+            objects[i]->setViewPos(graphics.camera.getCameraPos());
+        }
     }
 }
 

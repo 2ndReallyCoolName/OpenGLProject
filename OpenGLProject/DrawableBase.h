@@ -18,6 +18,8 @@ public:
 		model = _model;
 	}
 
+	virtual void setViewPos(glm::vec3& viewPos) = 0;
+
 	virtual void setShaders(std::string vertexShader, std::string fragmentShader) = 0;
 	virtual unsigned int addTexture(std::string fpath) = 0;
 	virtual void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view) = 0;

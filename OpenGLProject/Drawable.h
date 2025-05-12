@@ -67,6 +67,9 @@ public:
 	void SetLightColor(float color[]) {
 
 	}
+
+	virtual void setViewPos(glm::vec3& viewPos) = 0;
+
 protected:
 
 	virtual void createVertices() = 0;

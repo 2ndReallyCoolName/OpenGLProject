@@ -36,6 +36,11 @@ public:
 		pShader->setFloat4("lightColor", color[0], color[1], color[2], 1.0f);
 	}
 
+	void setViewPos(glm::vec3& viewPos) {
+		pShader->use();
+		pShader->setFloat3("viewPos", viewPos.x, viewPos.y, viewPos.z);
+	}
+
 protected:
 	void Init() override;
 	void InitBasic();

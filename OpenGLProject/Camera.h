@@ -84,6 +84,10 @@ public:
 		return fov;
 	}
 
+	glm::vec3& getCameraPos() {
+		return cameraPos;
+	}
+
 private:
 
 	float sensitivity;
