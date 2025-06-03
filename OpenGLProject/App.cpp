@@ -53,21 +53,21 @@ int App::Init()
     //objects.back()->setShaders("shader.vs", "shader.fs");
     //objects.back()->addTexture("..\\images\\paper.jpg");
 
-    /*objects.push_back(std::make_unique<TexturedSphere>(20, 14));
-    objects.back()->setModel(std::move(glm::translate(glm::mat4(1.0f), glm::vec3(0.1, 0.7, 0.2))));
-    objects.back()->setShaders("shader.vs", "shader.fs");
-    objects.back()->addTexture("..\\images\\earth.jpg");*/
+    objects.push_back(std::make_unique<TexturedSphere>(35, 22, true));
+    objects.back()->setModel(std::move(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0.7, -0.7, 0.2)), -1.57f, glm::vec3(1.0f, 0.0f, 0.0f))));
+    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShader.fs");
+    objects.back()->addTexture("..\\images\\earth.jpg");
 
     /*objects.push_back(std::make_unique<Cylinder>(35, 22));
     objects.back()->setModel(std::move(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0.3, 0.7, 0.2)), (float)(3.5*pi/2), glm::vec3(1.0f, 0.0f,0.0f))));
     objects.back()->setShaders("shader.vs", "shader.fs");
     objects.back()->addTexture("..\\images\\wood_planks.jpg");*/
 
-    objects.push_back(std::make_unique<Sphere>(35, 22, true));
-    objects.back()->SetColor(1.0f, 0.5f, 0.31f, 1.0f);
-    objects.back()->setModel(std::move(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0.3, 0.7, 0.2)), (float)(3.5*pi/2), glm::vec3(1.0f, 0.0f,0.0f))));
-    /*objects.back()->setShaders("lightShader.vs", "lightObjectShader.fs");*/
-    objects.back()->setShaders("normalColorShader.vs", "normalColorShader.fs");
+    //objects.push_back(std::make_unique<Sphere>(35, 22, true));
+    //objects.back()->SetColor(1.0f, 0.5f, 0.31f, 1.0f);
+    //objects.back()->setModel(std::move(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0.3, 0.7, 0.2)), (float)(3.5*pi/2), glm::vec3(1.0f, 0.0f,0.0f))));
+    ///*objects.back()->setShaders("lightShader.vs", "lightObjectShader.fs");*/
+    //objects.back()->setShaders("normalColorShader.vs", "normalColorShader.fs");
 
 
 	light = std::make_unique<Light>(1.0f, 1.0f, 1.0f);
@@ -144,6 +144,8 @@ void App::DrawScene()
     glm::mat4 view = graphics.camera.GetViewMatrix();
 
     projection = glm::perspective(glm::radians(graphics.camera.getFov()), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+
+	light->SetPosition(1.0f + sin(glfwGetTime()) * 2.0f, sin(glfwGetTime() / 2.0f), 0.0f);
 
     glm::mat4 trans = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5.5f, 7.0f));
 

@@ -2,17 +2,20 @@
 
 in vec3 Normal;
 in vec3 FragPos;
+in vec2 TexCoord;
 
 out vec4 FragColor;
 
+uniform sampler2D ourTexture;
 uniform vec4 lightColor;
-uniform vec4 objectColor;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 
 void main(){
-    float ambientStrength = 0.1;
-    float specularStrength = 0.5;
+
+    vec4 objectColor = texture(ourTexture, TexCoord);
+    float ambientStrength = 0.5;
+    float specularStrength = 1.5;
 
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize( FragPos - lightPos);

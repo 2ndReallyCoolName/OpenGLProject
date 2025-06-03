@@ -174,6 +174,8 @@
     <None Include="lightShader.vs" />
     <None Include="normalColorShader.fs" />
     <None Include="normalColorShader.vs" />
+    <None Include="normalTextureShader.fs" />
+    <None Include="normalTextureShader.vs" />
     <None Include="shader.fs" />
     <None Include="shader.vs" />
   </ItemGroup>

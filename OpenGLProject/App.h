@@ -35,10 +35,10 @@ public:
 	float lastX = 0.0f;
 	float lastY = 0.0f;
 
-private:
 	unsigned int SCR_WIDTH = 800;
 	unsigned int SCR_HEIGHT = 600;
 
+private:
 
 	float deltaTime = 0.0f;
 	float lastFrame = 0.0f;

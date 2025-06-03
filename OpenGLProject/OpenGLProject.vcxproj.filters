@@ -139,5 +139,11 @@
     <None Include="normalColorShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="normalTextureShader.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="normalTextureShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
