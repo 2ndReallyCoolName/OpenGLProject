@@ -54,7 +54,7 @@ int App::Init()
     //objects.back()->addTexture("..\\images\\paper.jpg");
 
     objects.push_back(std::make_unique<TexturedSphere>(35, 22, true));
-    objects.back()->setModel(std::move(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0.7, -0.7, 0.2)), -1.57f, glm::vec3(1.0f, 0.0f, 0.0f))));
+    objects.back()->setModel(std::move(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0)), -1.57f, glm::vec3(1.0f, 0.0f, 0.0f))));
     objects.back()->setShaders("normalTextureShader.vs", "normalTextureShader.fs");
     objects.back()->addTexture("..\\images\\earth.jpg");
 
@@ -71,7 +71,6 @@ int App::Init()
 
 
 	light = std::make_unique<Light>(1.0f, 1.0f, 1.0f);
-
 
 	return 0;
 }
@@ -145,9 +144,9 @@ void App::DrawScene()
 
     projection = glm::perspective(glm::radians(graphics.camera.getFov()), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
-	light->SetPosition(1.0f + sin(glfwGetTime()) * 2.0f, sin(glfwGetTime() / 2.0f), 0.0f);
+    glm::mat4 trans = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 0.0f, 0.0f));
 
-    glm::mat4 trans = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5.5f, 7.0f));
+    light->SetPosition(10.0f, 0.0f, 0.0f);
 
     glm::vec3 lightPos = light->GetPosition();
 

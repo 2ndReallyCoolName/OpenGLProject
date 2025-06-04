@@ -22,7 +22,7 @@ Light::Light()
 void Light::draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view)
 {
 
-	position = transformation * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	//position = transformation * glm::vec4(position, 1.0f);
 	useShader();
 
 	getShader()->setMat4("trans", transformation);

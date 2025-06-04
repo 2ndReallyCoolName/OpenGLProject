@@ -14,11 +14,11 @@ uniform vec3 viewPos;
 void main(){
 
     vec4 objectColor = texture(ourTexture, TexCoord);
-    float ambientStrength = 0.5;
-    float specularStrength = 1.5;
+    float ambientStrength = 0.3;
+    float specularStrength = 0.8;
 
     vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize( FragPos - lightPos);
+    vec3 lightDir = normalize( lightPos - FragPos );
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff*vec3(lightColor.x, lightColor.y, lightColor.z);
 
