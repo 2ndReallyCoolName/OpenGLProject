@@ -9,7 +9,9 @@ enum Camera_Movement {
 	FORWARD,
 	BACKWARD,
 	LEFT,
-	RIGHT
+	RIGHT,
+	UP,
+	DOWN
 };
 
 class Camera
@@ -28,6 +30,7 @@ public:
 		glm::quat qf = orientation * glm::quat(0, 0, 0, -1) * glm::conjugate(orientation);
 		glm::vec3 front = { qf.x, qf.y, qf.z };
 		glm::vec3 right = glm::normalize(glm::cross(front, worldUp));
+		glm::vec3 up = glm::normalize(glm::cross(right, front));
 
 		switch (movement) {
 		case FORWARD:
@@ -42,9 +45,13 @@ public:
 		case RIGHT:
 			cameraPos += right * cameraSpeed;
 			break;
+		case UP:
+			cameraPos += up * cameraSpeed;
+			break;
+		case DOWN:
+			cameraPos -= up * cameraSpeed;
+			break;
 		}
-
-		cameraPos.y = 0.0f;
 	}
 
 	void processMouse(float xoffset, float yoffset, GLboolean constrainPitch = true) {

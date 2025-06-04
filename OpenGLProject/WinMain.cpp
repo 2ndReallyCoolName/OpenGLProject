@@ -36,17 +36,17 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	float xOffset = (float)xpos - app.lastX;
 	float yOffset = app.lastY - (float)ypos;
 
-	if (xpos < 20) {
-		xOffset = 20.0f;
-	}
-	else if (xpos > app.SCR_WIDTH - 20) {
+	if (xpos < 40) {
 		xOffset = -20.0f;
 	}
-	else if (ypos < 20) {
-		yOffset = -20.0f;
+	else if (xpos > app.SCR_WIDTH - 40) {
+		xOffset = 20.0f;
 	}
-	else if (ypos > app.SCR_HEIGHT - 20) {
+	else if (ypos < 40) {
 		yOffset = 20.0f;
+	}
+	else if (ypos > app.SCR_HEIGHT - 40) {
+		yOffset = -20.0f;
 	}
 
 	app.lastX = (float)xpos;
