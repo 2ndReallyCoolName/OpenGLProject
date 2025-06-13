@@ -26,32 +26,17 @@ public:
 
 	Shader* getShader() { return pShader.get(); }
 
-	void SetLightColor(float r, float g, float b) {
-		pShader->use();
-		pShader->setFloat4("lightColor", r, g, b, 1.0f );
-	}
-
-	void SetLightColor(float color[]) {
-		pShader->use();
-		pShader->setFloat4("lightColor", color[0], color[1], color[2], 1.0f);
-	}
-
-	void setViewPos(glm::vec3& viewPos) {
-		pShader->use();
-		pShader->setFloat3("viewPos", viewPos.x, viewPos.y, viewPos.z);
-	}
 
 protected:
 	void Init() override;
 	void InitBasic();
-	void createVertices() override;
 	void createVertices(unsigned int m, unsigned int n);
-
-	void createNormalVertices() override;
 	void createNormalVertices(unsigned int m, unsigned int n);
+	void createTexturedVertices(unsigned int m, unsigned int n) override {}
+	void createTexturedNormalVertices(unsigned int m, unsigned int n) override {}
 
 	
-private:
+protected:
 	std::unique_ptr<Shader> pShader;
 };
 

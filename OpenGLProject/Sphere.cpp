@@ -41,12 +41,6 @@ void Sphere::draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& v
 	GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
 }
 
-
-void Sphere::createVertices()
-{
-	createVertices(20, 20);
-}
-
 void Sphere::createVertices(unsigned int m, unsigned int n)
 {
 	assert(m >= 2 && n >= 1);
@@ -108,11 +102,6 @@ void Sphere::createVertices(unsigned int m, unsigned int n)
 		indices.push_back((((iLong + 1) % (m + 1)) + factor) + (m + 1));
 		indices.push_back(iLong + (m + 1));
 	}
-}
-
-void Sphere::createNormalVertices()
-{
-	createNormalVertices(20, 20);
 }
 
 void Sphere::createNormalVertices(unsigned int m, unsigned int n)

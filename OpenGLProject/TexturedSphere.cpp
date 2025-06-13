@@ -71,12 +71,7 @@ void TexturedSphere::Init()
 	staticInitialized = true;
 }
 
-void TexturedSphere::createVertices()
-{
-	createVertices(20, 20); // default values
-}
-
-void TexturedSphere::createVertices(unsigned int m, unsigned int n)
+void TexturedSphere::createTexturedVertices(unsigned int m, unsigned int n)
 {
 	assert(m >= 2 && n >= 1);
 
@@ -143,12 +138,7 @@ void TexturedSphere::createVertices(unsigned int m, unsigned int n)
 	}
 }
 
-void TexturedSphere::createNormalVertices()
-{
-	createNormalVertices(20, 20);
-}
-
-void TexturedSphere::createNormalVertices(unsigned int m, unsigned int n)
+void TexturedSphere::createTexturedNormalVertices(unsigned int m, unsigned int n)
 {
 	assert(m >= 2 && n >= 1);
 

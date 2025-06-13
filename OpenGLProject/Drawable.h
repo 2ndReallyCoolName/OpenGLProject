@@ -61,19 +61,14 @@ public:
 		this->color[3] = a;
 	}
 
-	void SetLightColor(float r, float g, float b) {
-	}
-
-	void SetLightColor(float color[]) {
-
-	}
-
 	virtual void setViewPos(glm::vec3& viewPos) = 0;
 
 protected:
 
-	virtual void createVertices() = 0;
-	virtual void createNormalVertices() = 0;
+	virtual void createVertices(unsigned int m, unsigned int n) = 0;
+	virtual void createNormalVertices(unsigned int m, unsigned int n) = 0;
+	virtual void createTexturedVertices(unsigned int m, unsigned int n) = 0;
+	virtual void createTexturedNormalVertices(unsigned int m, unsigned int n) = 0;
 
 
 protected:

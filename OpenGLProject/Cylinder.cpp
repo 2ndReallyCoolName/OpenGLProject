@@ -50,24 +50,20 @@ void Cylinder::Init()
 	staticInitialized = true;
 }
 
-void Cylinder::createVertices()
-{
-	createVertices(20, 10);
-}
-
 void Cylinder::createVertices(unsigned int m, unsigned int n)
 {
 	assert(n >= 2 && m >= 3);
-	float long_div = 2 * pi / m, lat_div = 1.0f/n;
+	short vertex_size = 3;
+	float long_div = 2 * pi / m, lat_div = 1.0f / n;
 	float theta = 0.0f, tc_x = 0.0f;
-	
+
 	unsigned int end = (n + 1) * (m + 1);
 	face_vertex_end = end;
 
-	vertices.reserve(end*5 + 10 * (1 + m));
+	vertices.reserve(end * vertex_size + 2 * vertex_size * (1 + m));
 
 	for (unsigned int k = 0; k <= n; k++) {
-		
+
 		for (unsigned int i = 0; i <= m; i++) {
 
 			tc_x = (float)i / (m * 1.0f);
@@ -82,7 +78,269 @@ void Cylinder::createVertices(unsigned int m, unsigned int n)
 				tc_x = 1.0f;
 			}
 
-			float z = k*lat_div - 0.5;
+			float z = k * lat_div - 0.5;
+
+
+			// Vertex coordinates
+			vertices.push_back(x);
+			vertices.push_back(y);
+			vertices.push_back(z);
+		}
+	}
+
+	// bottom vertices
+	for (unsigned int i = 0; i < m; i++) {
+		// vertex coordinates
+		vertices.push_back(cos(i * long_div));
+		vertices.push_back(sin(i * long_div));
+		vertices.push_back(-0.5f);
+	}
+
+	// top vertices
+	for (unsigned int i = 0; i < m; i++) {
+		// vertex coordinates
+		vertices.push_back(cos(i * long_div));
+		vertices.push_back(sin(i * long_div));
+		vertices.push_back(0.5f);
+	}
+
+	// Top and bottom center vertices 
+
+	float lc[] = { 0.0f, 0.0f, -0.5f };
+	float uc[] = { 0.0f, 0.0f, 0.5f };
+
+	for (float i : lc) { vertices.push_back(i); }
+	for (float i : uc) { vertices.push_back(i); }
+
+	// Indices
+	indices.reserve(3 * (m + 1) * n + 6 * m);
+
+	unsigned short j = 0;
+
+	std::cout << end << std::endl;
+
+	// Cylinder face indices
+	for (unsigned short iLong = 0; iLong < end - m - 1; iLong++) {
+		if (iLong != 0 && iLong % (m + 1) == 0) {
+			j += 1;
+		}
+
+		unsigned short factor = (m + 1) * j;
+
+		indices.push_back(iLong);
+		indices.push_back(((iLong + 1) % (m + 1)) + factor);
+		indices.push_back(iLong + (m + 1));
+
+		indices.push_back(((iLong + 1) % (m + 1)) + factor);
+		indices.push_back((((iLong + 1) % (m + 1)) + factor) + (m + 1));
+		indices.push_back(iLong + (m + 1));
+	}
+
+	face_index_end = end - m - 1;
+
+	unsigned int bci = (vertices.size() / vertex_size) - 2;
+	unsigned int uci = (vertices.size() / vertex_size) - 1;
+
+	// Bottom face indices
+	for (unsigned int i = 0; i < m; i++) {
+		indices.push_back(end + i);
+		indices.push_back(bci);
+
+		if (i + 1 < m) {
+			indices.push_back(end + i + 1);
+		}
+		else {
+			indices.push_back(end);
+		}
+	}
+
+	end += m;
+
+	// Top face indices
+	for (unsigned int i = 0; i < m; i++) {
+		indices.push_back(end + i);
+		indices.push_back(uci);
+
+		if (i + 1 < m) {
+			indices.push_back(end + i + 1);
+		}
+		else {
+			indices.push_back(end);
+		}
+	}
+}
+
+void Cylinder::createNormalVertices(unsigned int m, unsigned int n)
+{
+	assert(n >= 2 && m >= 3);
+	short vertex_size = 6;
+	float long_div = 2 * pi / m, lat_div = 1.0f / n;
+	float theta = 0.0f, tc_x = 0.0f;
+
+	unsigned int end = (n + 1) * (m + 1);
+	face_vertex_end = end;
+
+	vertices.reserve(end * vertex_size + 2 * vertex_size * (1 + m));
+
+	for (unsigned int k = 0; k <= n; k++) {
+
+		for (unsigned int i = 0; i <= m; i++) {
+
+			tc_x = (float)i / (m * 1.0f);
+			theta = i * long_div;
+			float x = cos(theta);
+			float y = sin(theta);
+
+			if (i == m) {
+				theta = (i - 1) * long_div;
+				x = cos(0);
+				y = sin(0);
+				tc_x = 1.0f;
+			}
+
+			float z = k * lat_div - 0.5;
+
+
+			// Vertex coordinates
+			vertices.push_back(x);
+			vertices.push_back(y);
+			vertices.push_back(z);
+
+			// Normal coordinates
+			vertices.push_back(x);
+			vertices.push_back(y);
+			vertices.push_back(z);
+		}
+	}
+
+	// bottom vertices
+	for (unsigned int i = 0; i < m; i++) {
+		float x = cos(i * long_div);
+		float y = sin(i * long_div);
+		float z = -0.5f;
+
+		// vertex coordinates
+		vertices.push_back(x);
+		vertices.push_back(y);
+		vertices.push_back(z);
+
+		// Normal coordinates
+		vertices.push_back(x);
+		vertices.push_back(y);
+		vertices.push_back(z);
+	}
+
+	// top vertices
+	for (unsigned int i = 0; i < m; i++) {
+		float x = cos(i * long_div);
+		float y = sin(i * long_div);
+		float z = 0.5f;
+
+		// vertex coordinates
+		vertices.push_back(x);
+		vertices.push_back(y);
+		vertices.push_back(z);
+
+		// Normal coordinates
+		vertices.push_back(x);
+		vertices.push_back(y);
+		vertices.push_back(z);
+	}
+
+	// Top and bottom center vertices 
+
+	float lc[] = { 0.0f, 0.0f, -0.5f, 0.0f, 0.0f, -0.5f };
+	float uc[] = { 0.0f, 0.0f, 0.5f, 0.0f, 0.0f, -0.5f };
+
+	for (float i : lc) { vertices.push_back(i); }
+	for (float i : uc) { vertices.push_back(i); }
+
+	// Indices
+	indices.reserve(3 * (m + 1) * n + 6 * m);
+
+	unsigned short j = 0;
+
+	std::cout << end << std::endl;
+
+	// Cylinder face indices
+	for (unsigned short iLong = 0; iLong < end - m - 1; iLong++) {
+		if (iLong != 0 && iLong % (m + 1) == 0) {
+			j += 1;
+		}
+
+		unsigned short factor = (m + 1) * j;
+
+		indices.push_back(iLong);
+		indices.push_back(((iLong + 1) % (m + 1)) + factor);
+		indices.push_back(iLong + (m + 1));
+
+		indices.push_back(((iLong + 1) % (m + 1)) + factor);
+		indices.push_back((((iLong + 1) % (m + 1)) + factor) + (m + 1));
+		indices.push_back(iLong + (m + 1));
+	}
+
+	face_index_end = end - m - 1;
+
+	unsigned int bci = (vertices.size() / vertex_size) - 2;
+	unsigned int uci = (vertices.size() / vertex_size) - 1;
+
+	// Bottom face indices
+	for (unsigned int i = 0; i < m; i++) {
+		indices.push_back(end + i);
+		indices.push_back(bci);
+
+		if (i + 1 < m) {
+			indices.push_back(end + i + 1);
+		}
+		else {
+			indices.push_back(end);
+		}
+	}
+
+	end += m;
+
+	// Top face indices
+	for (unsigned int i = 0; i < m; i++) {
+		indices.push_back(end + i);
+		indices.push_back(uci);
+
+		if (i + 1 < m) {
+			indices.push_back(end + i + 1);
+		}
+		else {
+			indices.push_back(end);
+		}
+	}
+}
+
+void Cylinder::createTexturedVertices(unsigned int m, unsigned int n)
+{
+	assert(n >= 2 && m >= 3);
+	float long_div = 2 * pi / m, lat_div = 1.0f / n;
+	float theta = 0.0f, tc_x = 0.0f;
+
+	unsigned int end = (n + 1) * (m + 1);
+	face_vertex_end = end;
+
+	vertices.reserve(end * 5 + 10 * (1 + m));
+
+	for (unsigned int k = 0; k <= n; k++) {
+
+		for (unsigned int i = 0; i <= m; i++) {
+
+			tc_x = (float)i / (m * 1.0f);
+			theta = i * long_div;
+			float x = cos(theta);
+			float y = sin(theta);
+
+			if (i == m) {
+				theta = (i - 1) * long_div;
+				x = cos(0);
+				y = sin(0);
+				tc_x = 1.0f;
+			}
+
+			float z = k * lat_div - 0.5;
 
 
 			// Vertex coordinates
@@ -100,8 +358,8 @@ void Cylinder::createVertices(unsigned int m, unsigned int n)
 	// bottom vertices
 	for (unsigned int i = 0; i < m; i++) {
 		// vertex coordinates
-		vertices.push_back(cos(i*long_div));
-		vertices.push_back(sin(i*long_div));
+		vertices.push_back(cos(i * long_div));
+		vertices.push_back(sin(i * long_div));
 		vertices.push_back(-0.5f);
 
 
@@ -132,7 +390,7 @@ void Cylinder::createVertices(unsigned int m, unsigned int n)
 	for (float i : uc) { vertices.push_back(i); }
 
 	// Indices
-	indices.reserve(3*(m+1)*n + 6*m);
+	indices.reserve(3 * (m + 1) * n + 6 * m);
 
 	unsigned short j = 0;
 
@@ -172,7 +430,163 @@ void Cylinder::createVertices(unsigned int m, unsigned int n)
 			indices.push_back(end);
 		}
 	}
-	 
+
+	end += m;
+
+	// Top face indices
+	for (unsigned int i = 0; i < m; i++) {
+		indices.push_back(end + i);
+		indices.push_back(uci);
+
+		if (i + 1 < m) {
+			indices.push_back(end + i + 1);
+		}
+		else {
+			indices.push_back(end);
+		}
+	}
+}
+
+void Cylinder::createTexturedNormalVertices(unsigned int m, unsigned int n)
+{
+	assert(n >= 2 && m >= 3);
+	short vertex_size = 8;
+	float long_div = 2 * pi / m, lat_div = 1.0f / n;
+	float theta = 0.0f, tc_x = 0.0f;
+
+	unsigned int end = (n + 1) * (m + 1);
+	face_vertex_end = end;
+
+	vertices.reserve(end * vertex_size + 2 * vertex_size * (1 + m));
+
+	for (unsigned int k = 0; k <= n; k++) {
+
+		for (unsigned int i = 0; i <= m; i++) {
+
+			tc_x = (float)i / (m * 1.0f);
+			theta = i * long_div;
+			float x = cos(theta);
+			float y = sin(theta);
+
+			if (i == m) {
+				theta = (i - 1) * long_div;
+				x = cos(0);
+				y = sin(0);
+				tc_x = 1.0f;
+			}
+
+			float z = k * lat_div - 0.5;
+
+
+			// Vertex coordinates
+			vertices.push_back(x);
+			vertices.push_back(y);
+			vertices.push_back(z);
+
+
+			// Texture coordinates
+			vertices.push_back(tc_x);
+			vertices.push_back((float)(n - k) / (n * 1.0f));
+
+			// Normal coordinates
+			vertices.push_back(x);
+			vertices.push_back(y);
+			vertices.push_back(z);
+		}
+	}
+
+	// bottom vertices
+	for (unsigned int i = 0; i < m; i++) {
+		float x = cos(i * long_div);
+		float y = sin(i * long_div);
+		float z = -0.5f;
+
+		// vertex coordinates
+		vertices.push_back(x);
+		vertices.push_back(y);
+		vertices.push_back(z);
+
+		// texture coordinates
+		vertices.push_back(x);
+		vertices.push_back(y);
+
+		// normal coordinates
+		vertices.push_back(x);
+		vertices.push_back(y);
+		vertices.push_back(z);
+	}
+
+	// top vertices
+	for (unsigned int i = 0; i < m; i++) {
+		float x = cos(i * long_div);
+		float y = sin(i * long_div);
+		float z = 0.5f;
+
+		// vertex coordinates
+		vertices.push_back(x);
+		vertices.push_back(y);
+		vertices.push_back(z);
+
+		// texture coordinates
+		vertices.push_back(x);
+		vertices.push_back(y);
+
+		// normal coordinates
+		vertices.push_back(x);
+		vertices.push_back(y);
+		vertices.push_back(z);
+	}
+
+	// Top and bottom center vertices 
+
+	float lc[] = { 0.0f, 0.0f, -0.5f, 0.5f, 0.5f,  0.0f, 0.0f, -0.5f };
+	float uc[] = { 0.0f, 0.0f, 0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 0.5f };
+
+	for (float i : lc) { vertices.push_back(i); }
+	for (float i : uc) { vertices.push_back(i); }
+
+	// Indices
+	indices.reserve(3 * (m + 1) * n + 6 * m);
+
+	unsigned short j = 0;
+
+	std::cout << end << std::endl;
+
+	// Cylinder face indices
+	for (unsigned short iLong = 0; iLong < end - m - 1; iLong++) {
+		if (iLong != 0 && iLong % (m + 1) == 0) {
+			j += 1;
+		}
+
+		unsigned short factor = (m + 1) * j;
+
+		indices.push_back(iLong);
+		indices.push_back(((iLong + 1) % (m + 1)) + factor);
+		indices.push_back(iLong + (m + 1));
+
+		indices.push_back(((iLong + 1) % (m + 1)) + factor);
+		indices.push_back((((iLong + 1) % (m + 1)) + factor) + (m + 1));
+		indices.push_back(iLong + (m + 1));
+	}
+
+	face_index_end = end - m - 1;
+
+	unsigned int bci = (vertices.size() / vertex_size) - 2;
+	unsigned int uci = (vertices.size() / vertex_size) - 1;
+
+	// Bottom face indices
+	for (unsigned int i = 0; i < m; i++) {
+		indices.push_back(end + i);
+		indices.push_back(bci);
+
+		if (i + 1 < m) {
+			indices.push_back(end + i + 1);
+		}
+		else {
+			indices.push_back(end);
+		}
+	}
+
 	end += m;
 
 	// Top face indices

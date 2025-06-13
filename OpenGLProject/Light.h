@@ -14,6 +14,21 @@ public:
 		position = glm::vec3(x, y, z); 
 	}
 
+	void SetLightColor(float r, float g, float b) {
+		pShader->use();
+		pShader->setFloat4("lightColor", r, g, b, 1.0f);
+	}
+
+	void SetLightColor(float color[]) {
+		pShader->use();
+		pShader->setFloat4("lightColor", color[0], color[1], color[2], 1.0f);
+	}
+
+	void setViewPos(glm::vec3& viewPos) {
+		pShader->use();
+		pShader->setFloat3("viewPos", viewPos.x, viewPos.y, viewPos.z);
+	}
+
 private:
 	void Initialize();
 private:

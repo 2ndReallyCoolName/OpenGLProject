@@ -38,8 +38,10 @@ public:
 	Shader* getShader() { return pShader.get(); }
 
 private:
-	void createVertices() override;
-	void createVertices(unsigned int m, unsigned int n);
+	void createVertices(unsigned int m, unsigned int n) override;
+	void createNormalVertices(unsigned int m, unsigned int n) override;
+	void createTexturedVertices(unsigned int m, unsigned int n) override;
+	void createTexturedNormalVertices(unsigned int m, unsigned int n) override;
 
 private:
 	std::unique_ptr<Shader> pShader;
