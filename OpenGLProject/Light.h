@@ -1,8 +1,7 @@
 #pragma once
 #include "Sphere.h"
 
-
-class Light : Sphere
+class Light : Sphere<DrawableType::NORMAL>
 {
 public:
 	Light(float r, float g, float b);
@@ -34,5 +33,13 @@ private:
 private:
 
 	glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
+private:
+	using Drawable<Sphere<DrawableType::NORMAL>>::vertices;
+	using Drawable<Sphere<DrawableType::NORMAL>>::indices;
+	using Drawable<Sphere<DrawableType::NORMAL>>::VAO;
+	using Drawable<Sphere<DrawableType::NORMAL>>::EBO;
+	using Drawable<Sphere<DrawableType::NORMAL>>::staticInitialized;
+	using Drawable<Sphere<DrawableType::NORMAL>>::color;
+	using Sphere<DrawableType::NORMAL>::pShader;
 };
 

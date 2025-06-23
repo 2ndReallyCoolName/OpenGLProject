@@ -3,12 +3,13 @@
 #include "DrawableBase.h"
 #include "GLErrorHandling.h"
 
+
 template <class T>
 class Drawable : public DrawableBase {
 public:
 	Drawable() = default;
 
-	virtual void Init() {
+	virtual void Init(DrawableType D) {
 		if (!staticInitialized) {
 
 			GLCall(glGenVertexArrays(1, &VAO));
@@ -23,12 +24,36 @@ public:
 			GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
 			GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW));
 
-
-			GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0));
-			GLCall(glEnableVertexAttribArray(0));
-
-			GLCall(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))));
-			GLCall(glEnableVertexAttribArray(1));
+			switch (D) {
+			case BASIC:
+				GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0));
+				GLCall(glEnableVertexAttribArray(0));
+				break;
+			case NORMAL:
+				GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0));
+				GLCall(glEnableVertexAttribArray(0));
+				GLCall(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float))));
+				GLCall(glEnableVertexAttribArray(1));
+				break;
+			case TEXTURE:
+				GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0));
+				GLCall(glEnableVertexAttribArray(0));
+				GLCall(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))));
+				GLCall(glEnableVertexAttribArray(1));
+				break;
+			case NORMALTEXTURE:
+				GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0));
+				GLCall(glEnableVertexAttribArray(0));
+				GLCall(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))));
+				GLCall(glEnableVertexAttribArray(1));
+				GLCall(glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float))));
+				GLCall(glEnableVertexAttribArray(2));
+				break;
+			default:
+				GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0));
+				GLCall(glEnableVertexAttribArray(0));
+				break;
+			}
 		}
 
 		staticInitialized = true;

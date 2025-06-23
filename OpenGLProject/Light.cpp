@@ -3,8 +3,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+
 Light::Light(float r, float g, float b)
-	: Sphere(30, 30, true)
+	: Sphere<DrawableType::NORMAL>(30, 30)
 {
 	color[0] = r;
 	color[1] = g;
@@ -14,22 +15,23 @@ Light::Light(float r, float g, float b)
 }
 
 Light::Light()
-	: Sphere(30, 30, true)
+	: Sphere< DrawableType::NORMAL>(30, 30)
 {
 	Initialize();
 }
+
 
 void Light::draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view)
 {
 
 	//position = transformation * glm::vec4(position, 1.0f);
-	useShader();
+	this->useShader();
 
-	getShader()->setMat4("trans", transformation);
-	getShader()->setMat4("view", view);
-	getShader()->setMat4("projection", projection);
-	getShader()->setMat4("model", model);
-	getShader()->setFloat4("lightColor", color);
+	this->getShader()->setMat4("trans", transformation);
+	this->getShader()->setMat4("view", view);
+	this->getShader()->setMat4("projection", projection);
+	this->getShader()->setMat4("model", this->model);
+	this->getShader()->setFloat4("lightColor", color);
 
 	GLCall(glBindVertexArray(VAO));
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
@@ -39,5 +41,5 @@ void Light::draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& vi
 void Light::Initialize() {
 	this->setModel(std::move(glm::translate(glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f)), glm::vec3(0.0, 0.7, 0.0))));
 	this->setShaders("lightShader.vs", "lightShader.fs");
-	getShader()->setFloat4("lightColor", color);
+	this->getShader()->setFloat4("lightColor", color);
 }

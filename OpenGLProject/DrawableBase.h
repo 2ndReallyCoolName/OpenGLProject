@@ -4,9 +4,12 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <string>
 
+enum DrawableType { BASIC, NORMAL, TEXTURE, NORMALTEXTURE };
+constexpr double pi = 3.14159265358979323846;
+
 
 class DrawableBase {
-	template<class T>
+	template <class T>
 	friend class Drawable;
 
 public:

@@ -150,7 +150,6 @@
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TexturedSphere.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
