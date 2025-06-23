@@ -5,7 +5,6 @@
 #include "Graphics.h"
 #include "Box.h"
 #include "Sphere.h"
-#include "TexturedSphere.h"
 #include "Cylinder.h"
 #include "Light.h"
 

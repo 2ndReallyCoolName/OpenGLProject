@@ -27,7 +27,7 @@ public:
 				createVertices(m, n);
 				break;
 			}
-			this->Init();
+			this->Init(X);
 		}
 	}
 

@@ -141,13 +141,10 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\..\external\src\glad.c" />
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="Box.cpp" />
-    <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="DrawableBase.h" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="WinMain.cpp" />
@@ -165,7 +162,6 @@
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="TexturedSphere.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="lightObjectShader.fs" />
