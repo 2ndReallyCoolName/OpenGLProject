@@ -31,18 +31,6 @@ public:
 		}
 	}
 
-	void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view) override {
-		BindTextures();
-		useShader();
-		getShader()->setMat4("trans", transformation);
-		getShader()->setMat4("view", view);
-		getShader()->setMat4("projection", projection);
-
-		GLCall(glBindVertexArray(VAO));
-		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
-		GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
-	}
-
 	void  setShaders(std::string vertexShader, std::string fragmentShader) {
 		pShader = std::make_unique<Shader>(vertexShader.c_str(), fragmentShader.c_str());
 	}
@@ -65,6 +53,10 @@ public:
 	}
 
 	Shader* getShader() { return pShader.get(); }
+
+	DrawableType getType() {
+		return X;
+	}
 
 
 private:

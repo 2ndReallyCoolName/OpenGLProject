@@ -2,6 +2,7 @@
 #include <vector>
 #include "DrawableBase.h"
 #include "GLErrorHandling.h"
+#include "Shader.h"
 
 
 template <class T>
@@ -76,8 +77,45 @@ public:
 
 	virtual void BindTextures() = 0;
 
-	virtual void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view) = 0;
-	virtual void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view, glm::vec3& lightPos) = 0;
+	void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view) {
+		DrawableType D = getType();
+		if (D == DrawableType::NORMALTEXTURE || D == DrawableType::TEXTURE) {
+			BindTextures();
+			useShader();
+		}
+		else {
+			useShader();
+			getShader()->setFloat4("objectColor", color);
+		}
+		getShader()->setMat4("trans", transformation);
+		getShader()->setMat4("view", view);
+		getShader()->setMat4("projection", projection);
+
+		GLCall(glBindVertexArray(VAO));
+		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
+		GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
+	}
+
+	void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view, glm::vec3& lightPos) {
+		DrawableType D = getType();
+		if (D == DrawableType::NORMALTEXTURE || D == DrawableType::TEXTURE) {
+			BindTextures();
+			useShader();
+		}
+		else {
+			useShader();
+			getShader()->setFloat4("objectColor", color);
+		}
+
+		getShader()->setFloat3("lightPos", lightPos.x, lightPos.y, lightPos.z);
+		getShader()->setMat4("trans", transformation);
+		getShader()->setMat4("view", view);
+		getShader()->setMat4("projection", projection);
+
+		GLCall(glBindVertexArray(VAO));
+		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
+		GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
+	}
 
 	void SetColor(float r, float g, float b, float a) {
 		this->color[0] = r;
@@ -94,6 +132,9 @@ protected:
 	virtual void createNormalVertices(unsigned int m, unsigned int n) = 0;
 	virtual void createTexturedVertices(unsigned int m, unsigned int n) = 0;
 	virtual void createTexturedNormalVertices(unsigned int m, unsigned int n) = 0;
+
+	virtual DrawableType getType() = 0;
+	virtual Shader* getShader() = 0;
 
 
 protected:

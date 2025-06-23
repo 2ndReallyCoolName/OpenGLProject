@@ -27,20 +27,8 @@ public:
 				createVertices(m, n);
 				break;
 			}
-			this->Init();
+			this->Init(X);
 		}
-	}
-
-	void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view) override {
-		BindTextures();
-		useShader();
-		getShader()->setMat4("trans", transformation);
-		getShader()->setMat4("view", view);
-		getShader()->setMat4("projection", projection);
-
-		GLCall(glBindVertexArray(VAO));
-		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
-		GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
 	}
 
 	void  setShaders(std::string vertexShader, std::string fragmentShader) {
@@ -64,7 +52,26 @@ public:
 			textures[i].BindTexture(i);
 	}
 
+	void setViewPos(glm::vec3& viewPos) {
+		pShader->use();
+		pShader->setFloat3("viewPos", viewPos.x, viewPos.y, viewPos.z);
+	}
+
+	void SetLightColor(float color[]) {
+		pShader->use();
+		pShader->setFloat4("lightColor", color[0], color[1], color[2], 1.0f);
+	}
+
+	void SetLightColor(float r, float g, float b) {
+		pShader->use();
+		pShader->setFloat4("lightColor", r, g, b, 1.0f);
+	}
+
 	Shader* getShader() { return pShader.get(); }
+
+	DrawableType getType() {
+		return X;
+	}
 
 private:
 	void createVertices(unsigned int m, unsigned int n) override {
@@ -630,6 +637,7 @@ private:
 	using Drawable<Cylinder<X>>::VAO;
 	using Drawable<Cylinder<X>>::EBO;
 	using Drawable<Cylinder<X>>::staticInitialized;
+	using Drawable<Cylinder<X>>::color;
 };
 
 
