@@ -52,6 +52,21 @@ public:
 			textures[i].BindTexture(i);
 	}
 
+	void setViewPos(glm::vec3& viewPos) {
+		pShader->use();
+		pShader->setFloat3("viewPos", viewPos.x, viewPos.y, viewPos.z);
+	}
+
+	void SetLightColor(float color[]) {
+		pShader->use();
+		pShader->setFloat4("lightColor", color[0], color[1], color[2], 1.0f);
+	}
+
+	void SetLightColor(float r, float g, float b) {
+		pShader->use();
+		pShader->setFloat4("lightColor", r, g, b, 1.0f);
+	}
+
 	Shader* getShader() { return pShader.get(); }
 
 	DrawableType getType() {
@@ -272,7 +287,7 @@ private:
 				case 5: // Bottom face
 					// Vertex coordinates
 					vertices.push_back(x);
-					vertices.push_back(z);
+					vertices.push_back(-z);
 					vertices.push_back(y);
 
 					if (texture) {
@@ -284,7 +299,7 @@ private:
 					if (normal) {
 						// Normal  coordinates
 						vertices.push_back(x);
-						vertices.push_back(z);
+						vertices.push_back(-z);
 						vertices.push_back(y);
 					}
 
