@@ -533,7 +533,7 @@ private:
 			// normal coordinates
 			vertices.push_back(x);
 			vertices.push_back(y);
-			vertices.push_back(z);
+			vertices.push_back(-1.0f);
 		}
 
 		// top vertices
@@ -554,7 +554,7 @@ private:
 			// normal coordinates
 			vertices.push_back(x);
 			vertices.push_back(y);
-			vertices.push_back(z);
+			vertices.push_back(1.0f);
 		}
 
 		// Top and bottom center vertices 

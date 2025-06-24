@@ -59,7 +59,7 @@ int App::Init()
 
     objects.push_back(std::make_unique<Cylinder<DrawableType::NORMALTEXTURE>>(35, 22));
     objects.back()->setModel(std::move(glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 3.0f, 0.0)), 1.57f, glm::vec3(1.0f, 0.0f, 0.0f)), 0.5f, glm::vec3(0.0f, 1.0f, 0.0f))));
-    //objects.back()->setShaders("shader.vs", "shader.fs");
+    //objects.back()->setModel(std::move(glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0)), -1.57f, glm::vec3(1.0f, 0.0f, 0.0f)), 0.5f, glm::vec3(0.0f, 1.0f, 0.0f))));
     objects.back()->setShaders("normalTextureShader.vs", "normalTextureShader.fs");
     objects.back()->addTexture("..\\images\\wood_planks.jpg");
 

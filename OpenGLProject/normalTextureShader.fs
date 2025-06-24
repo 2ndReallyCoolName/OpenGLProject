@@ -14,7 +14,7 @@ uniform vec3 viewPos;
 void main(){
 
     vec4 objectColor = texture(ourTexture, TexCoord);
-    float ambientStrength = 2.0;
+    float ambientStrength = 1.0;
     float specularStrength = 0.8;
 
     vec3 norm = normalize(Normal);
@@ -28,6 +28,7 @@ void main(){
     vec3 specular = specularStrength*spec*vec3(lightColor.x, lightColor.y, lightColor.z);
 
     vec3 ambient = ambientStrength * vec3(lightColor.x, lightColor.y, lightColor.z);
-    vec3 result = (diff*(ambient + diffuse + specular))*vec3(objectColor.x, objectColor.y, objectColor.z);
+    vec3 result = diff*(ambient + diffuse + specular);
+
     FragColor = vec4(objectColor*vec4(result, 1.0f));
 }
