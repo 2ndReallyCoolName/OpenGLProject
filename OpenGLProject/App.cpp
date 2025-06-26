@@ -52,6 +52,12 @@ int App::Init()
     objects.back()->setShaders("normalTextureShader.vs", "normalTextureShader.fs");
     objects.back()->addTexture("..\\images\\paper.jpg");
 
+    objects.push_back(std::make_unique<Box<DrawableType::NORMALTEXTURE>>(10, 10));
+    objects.back()->setModel(std::move(glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, -2.0f, 0.0)), -1.57f, glm::vec3(1.0f, 0.0f, 0.0f)), 0.5f, glm::vec3(0.0f, 1.0f, 0.0f))));
+    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShader.fs");
+    std::cout << objects.back()->addTexture("..\\images\\container2.png") << std::endl;
+    std::cout << objects.back()->addTexture("..\\images\\container2_specular.png") << std::endl;
+
     objects.push_back(std::make_unique<Sphere<DrawableType::NORMALTEXTURE>>(35, 22));
     objects.back()->setModel(std::move(glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0)), -1.57f, glm::vec3(1.0f, 0.0f, 0.0f)), 0.5f, glm::vec3(0.0f, 1.0f, 0.0f))));
     objects.back()->setShaders("normalTextureShader.vs", "normalTextureShader.fs");
