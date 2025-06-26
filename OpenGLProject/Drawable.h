@@ -4,6 +4,12 @@
 #include "GLErrorHandling.h"
 #include "Shader.h"
 
+struct Material {
+	float shininess = 32.0f;
+	float specular[3] = {0.5f, 0.5f, 0.31f};
+	float diffuse[3] = {1.0f, 0.5f, 0.31f};
+	float ambient[3] = { 1.0f, 1.5f, 1.31f};
+};
 
 template <class T>
 class Drawable : public DrawableBase {
@@ -90,6 +96,10 @@ public:
 		getShader()->setMat4("trans", transformation);
 		getShader()->setMat4("view", view);
 		getShader()->setMat4("projection", projection);
+		getShader()->setFloat("material.shininess", material.shininess);
+		getShader()->setFloat3("material.specular", material.specular[0], material.specular[1], material.specular[2]);
+		getShader()->setFloat3("material.diffuse", material.diffuse[0], material.diffuse[1], material.diffuse[2]);
+		getShader()->setFloat3("material.ambient", material.ambient[0], material.ambient[1], material.ambient[2]);
 
 		GLCall(glBindVertexArray(VAO));
 		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
@@ -111,6 +121,10 @@ public:
 		getShader()->setMat4("trans", transformation);
 		getShader()->setMat4("view", view);
 		getShader()->setMat4("projection", projection);
+		getShader()->setFloat("material.shininess", material.shininess);
+		getShader()->setFloat3("material.specular", material.specular[0], material.specular[1], material.specular[2]);
+		getShader()->setFloat3("material.diffuse", material.diffuse[0], material.diffuse[1], material.diffuse[2]);
+		getShader()->setFloat3("material.ambient", material.ambient[0], material.ambient[1], material.ambient[2]);
 
 		GLCall(glBindVertexArray(VAO));
 		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
@@ -125,6 +139,10 @@ public:
 	}
 
 	virtual void setViewPos(glm::vec3& viewPos) = 0;
+
+	void setMaterial(Material& mat) {
+		material = mat;
+	}
 
 protected:
 
@@ -148,6 +166,8 @@ protected:
 	static bool staticInitialized;
 
 	std::vector<float> color = { 1.0f, 1.0f, 1.0f, 1.0f };
+	
+	Material material;
 };
 
 template<class T>
