@@ -97,9 +97,8 @@ public:
 		getShader()->setMat4("view", view);
 		getShader()->setMat4("projection", projection);
 		getShader()->setFloat("material.shininess", material.shininess);
-		getShader()->setFloat3("material.specular", material.specular[0], material.specular[1], material.specular[2]);
-		getShader()->setFloat3("material.diffuse", material.diffuse[0], material.diffuse[1], material.diffuse[2]);
-		getShader()->setFloat3("material.ambient", material.ambient[0], material.ambient[1], material.ambient[2]);
+		getShader()->setInt("material.diffuse", 0);
+		getShader()->setInt("material.specular", 1);
 
 		GLCall(glBindVertexArray(VAO));
 		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
@@ -121,9 +120,8 @@ public:
 		getShader()->setMat4("view", view);
 		getShader()->setMat4("projection", projection);
 		getShader()->setFloat("material.shininess", material.shininess);
-		getShader()->setFloat3("material.specular", material.specular[0], material.specular[1], material.specular[2]);
-		getShader()->setFloat3("material.diffuse", material.diffuse[0], material.diffuse[1], material.diffuse[2]);
-		getShader()->setFloat3("material.ambient", material.ambient[0], material.ambient[1], material.ambient[2]);
+		getShader()->setInt("material.diffuse", 0);
+		getShader()->setInt("material.specular", 1);
 		getShader()->setFloat3("light.ambient", 0.2f, 0.2f, 0.2f);
 		getShader()->setFloat3("light.diffuse", 0.9f, 0.9f, 0.9f);
 		getShader()->setFloat3("light.specular", 1.0f, 1.0f, 1.0f);
