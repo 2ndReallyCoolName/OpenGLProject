@@ -126,6 +126,11 @@ public:
 		getShader()->setFloat3("light.diffuse", 0.9f, 0.9f, 0.9f);
 		getShader()->setFloat3("light.specular", 1.0f, 1.0f, 1.0f);
 		getShader()->setFloat3("light.position", lightPos.x, lightPos.y, lightPos.z);
+		getShader()->setFloat3("light.direction", -0.2f, -1.0f, -0.3f);
+		getShader()->setFloat("light.constant", 0.01f);
+		getShader()->setFloat("light.linear", 0.009f);
+		getShader()->setFloat("light.quadratic", 0.0302f);
+
 
 		GLCall(glBindVertexArray(VAO));
 		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));

@@ -130,5 +130,11 @@
     <None Include="normalTextureShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="normalTextureShaderDirectionalLight.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="normalTextureShaderPointLight.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
