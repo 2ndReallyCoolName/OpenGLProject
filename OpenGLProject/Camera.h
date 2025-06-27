@@ -95,6 +95,12 @@ public:
 		return cameraPos;
 	}
 
+	glm::vec3& getCameraFront() {
+		glm::quat qf = orientation * glm::quat(0, 0, 0, -1) * glm::conjugate(orientation);
+		glm::vec3 front = { qf.x, qf.y, qf.z };
+		return front;
+	}
+
 private:
 
 	float sensitivity;

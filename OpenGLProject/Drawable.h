@@ -137,6 +137,39 @@ public:
 		GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
 	}
 
+	void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view, glm::vec3& lightPos, glm::vec3& lightDir, float cutOffAngle) {
+		DrawableType D = getType();
+		if (D == DrawableType::NORMALTEXTURE || D == DrawableType::TEXTURE) {
+			BindTextures();
+			useShader();
+		}
+		else {
+			useShader();
+			getShader()->setFloat4("objectColor", color);
+		}
+
+		getShader()->setMat4("trans", transformation);
+		getShader()->setMat4("view", view);
+		getShader()->setMat4("projection", projection);
+		getShader()->setFloat("material.shininess", material.shininess);
+		getShader()->setInt("material.diffuse", 0);
+		getShader()->setInt("material.specular", 1);
+		getShader()->setFloat3("light.ambient", 0.2f, 0.2f, 0.2f);
+		getShader()->setFloat3("light.diffuse", 0.9f, 0.9f, 0.9f);
+		getShader()->setFloat3("light.specular", 1.0f, 1.0f, 1.0f);
+		getShader()->setFloat3("light.position", lightPos.x, lightPos.y, lightPos.z);
+		getShader()->setFloat3("light.direction", lightDir.x, lightDir.y, lightDir.z);
+		getShader()->setFloat("light.cutOff", glm::cos(glm::radians(cutOffAngle)));
+		getShader()->setFloat("light.constant", 0.01f);
+		getShader()->setFloat("light.linear", 0.009f);
+		getShader()->setFloat("light.quadratic", 0.0302f);
+
+
+		GLCall(glBindVertexArray(VAO));
+		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
+		GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
+	}
+
 	void SetColor(float r, float g, float b, float a) {
 		this->color[0] = r;
 		this->color[1] = g;

@@ -49,7 +49,7 @@ int App::Init()
 
     objects.push_back(std::make_unique<Box<DrawableType::NORMALTEXTURE>>(10, 10));
     objects.back()->setModel(std::move(glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(5.0f, 0.0f, -2.0)), -1.57f, glm::vec3(1.0f, 0.0f, 0.0f)), 0.5f, glm::vec3(0.0f, 1.0f, 0.0f))));
-    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShaderPointLight.fs");
+    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShaderSpotlight.fs");
     objects.back()->addTexture("..\\images\\paper.jpg");
 
     objects.push_back(std::make_unique<Box<DrawableType::NORMALTEXTURE>>(10, 10));
@@ -70,7 +70,7 @@ int App::Init()
 
     objects.push_back(std::make_unique<Cylinder<DrawableType::NORMALTEXTURE>>(35, 22));
     objects.back()->setModel(std::move(glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 3.0f, 0.0)), 1.57f, glm::vec3(1.0f, 0.0f, 0.0f)), 0.5f, glm::vec3(0.0f, 1.0f, 0.0f))));
-    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShader.fs");
+    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShaderSpotlight.fs");
     objects.back()->addTexture("..\\images\\wood_planks.jpg");
 
     //objects.push_back(std::make_unique<Sphere>(35, 22, true));
@@ -172,7 +172,9 @@ void App::DrawScene()
 
     light->SetPosition(10.0f, 0.0f, 0.0f);
 
-    glm::vec3 lightPos = light->GetPosition();
+    //glm::vec3 lightPos = light->GetPosition();
+    glm::vec3 lightPos = graphics.camera.getCameraPos();
+    glm::vec3 lightDir = graphics.camera.getCameraFront();
 
 	light->draw(trans, projection, view);
 
@@ -183,6 +185,7 @@ void App::DrawScene()
         trans = glm::rotate(trans, 0.8f*(float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 0.5f));
 
 		objects[i]->SetLightColor(&(light->GetLightColor()[0]));
-        objects[i]->draw(trans, projection, view, lightPos);
+        //objects[i]->draw(trans, projection, view, lightPos);
+        objects[i]->draw(trans, projection, view, lightPos, lightDir, 20.0f);
     }
 }
