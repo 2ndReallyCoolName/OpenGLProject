@@ -186,6 +186,6 @@ void App::DrawScene()
 
 		objects[i]->SetLightColor(&(light->GetLightColor()[0]));
         //objects[i]->draw(trans, projection, view, lightPos);
-        objects[i]->draw(trans, projection, view, lightPos, lightDir, 20.0f);
+        objects[i]->draw(trans, projection, view, lightPos, lightDir, 15.0f, 20.0f);
     }
 }

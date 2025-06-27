@@ -137,7 +137,7 @@ public:
 		GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
 	}
 
-	void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view, glm::vec3& lightPos, glm::vec3& lightDir, float cutOffAngle) {
+	void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view, glm::vec3& lightPos, glm::vec3& lightDir, float cutOffAngle, float outerCutoffAngle) {
 		DrawableType D = getType();
 		if (D == DrawableType::NORMALTEXTURE || D == DrawableType::TEXTURE) {
 			BindTextures();
@@ -160,6 +160,7 @@ public:
 		getShader()->setFloat3("light.position", lightPos.x, lightPos.y, lightPos.z);
 		getShader()->setFloat3("light.direction", lightDir.x, lightDir.y, lightDir.z);
 		getShader()->setFloat("light.cutOff", glm::cos(glm::radians(cutOffAngle)));
+		getShader()->setFloat("light.outerCutOff", glm::cos(glm::radians(outerCutoffAngle)));
 		getShader()->setFloat("light.constant", 0.01f);
 		getShader()->setFloat("light.linear", 0.009f);
 		getShader()->setFloat("light.quadratic", 0.0302f);

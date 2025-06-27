@@ -27,7 +27,7 @@ public:
 	virtual unsigned int addTexture(std::string fpath) = 0;
 	virtual void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view) = 0;
 	virtual void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view, glm::vec3& lightPos) = 0;
-	virtual void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view, glm::vec3& lightPos, glm::vec3& lightDir, float cutOffAngle) = 0;
+	virtual void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view, glm::vec3& lightPos, glm::vec3& lightDir, float cutOffAngle, float outerCutoffAngle) = 0;
 	virtual void SetColor(float r, float g, float b, float a) = 0;
 	virtual void SetLightColor(float color[]) = 0;
 
