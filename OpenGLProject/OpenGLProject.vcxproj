@@ -172,6 +172,7 @@
     <None Include="normalTextureShader.fs" />
     <None Include="normalTextureShader.vs" />
     <None Include="normalTextureShaderDirectionalLight.fs" />
+    <None Include="normalTextureShaderLight.fs" />
     <None Include="normalTextureShaderPointLight.fs" />
     <None Include="normalTextureShaderSpotlight.fs" />
     <None Include="shader.fs" />

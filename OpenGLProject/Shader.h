@@ -21,4 +21,6 @@ public:
 	void setFloat4(const std::string& name, std::vector<float>& v) const;
 	void setFloat3(const std::string& name, std::vector<float>& v) const;
 	void setFloat3(const std::string& name, float r, float g, float b) const;
+	void setVec3(const std::string& name, glm::vec3 value) const;
+	void setVec3(const std::string& name, float r, float g, float b) const;
 };

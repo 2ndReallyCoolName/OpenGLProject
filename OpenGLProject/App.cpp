@@ -49,28 +49,28 @@ int App::Init()
 
     objects.push_back(std::make_unique<Box<DrawableType::NORMALTEXTURE>>(10, 10));
     objects.back()->setModel(std::move(glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(5.0f, 0.0f, -2.0)), -1.57f, glm::vec3(1.0f, 0.0f, 0.0f)), 0.5f, glm::vec3(0.0f, 1.0f, 0.0f))));
-    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShaderSpotlight.fs");
+    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShaderLight.fs");
     objects.back()->addTexture("..\\images\\paper.jpg");
 
     objects.push_back(std::make_unique<Box<DrawableType::NORMALTEXTURE>>(10, 10));
     objects.back()->setModel(std::move(glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 6.0f, -5.0)), -1.57f, glm::vec3(1.0f, 0.0f, 0.0f)), 0.5f, glm::vec3(0.0f, 1.0f, 0.0f))));
-    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShaderPointLight.fs");
+    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShaderLight.fs");
     objects.back()->addTexture("..\\images\\paper.jpg");
 
     objects.push_back(std::make_unique<Box<DrawableType::NORMALTEXTURE>>(10, 10));
     objects.back()->setModel(std::move(glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, -2.0f, 0.0)), -1.57f, glm::vec3(1.0f, 0.0f, 0.0f)), 0.5f, glm::vec3(0.0f, 1.0f, 0.0f))));
-    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShaderDirectionalLight.fs");
+    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShaderLight.fs");
     objects.back()->addTexture("..\\images\\container2.png");
     objects.back()->addTexture("..\\images\\container2_specular.png");
 
     objects.push_back(std::make_unique<Sphere<DrawableType::NORMALTEXTURE>>(35, 22));
     objects.back()->setModel(std::move(glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0)), -1.57f, glm::vec3(1.0f, 0.0f, 0.0f)), 0.5f, glm::vec3(0.0f, 1.0f, 0.0f))));
-    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShader.fs");
+    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShaderLight.fs");
     objects.back()->addTexture("..\\images\\earth.jpg");
 
     objects.push_back(std::make_unique<Cylinder<DrawableType::NORMALTEXTURE>>(35, 22));
     objects.back()->setModel(std::move(glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 3.0f, 0.0)), 1.57f, glm::vec3(1.0f, 0.0f, 0.0f)), 0.5f, glm::vec3(0.0f, 1.0f, 0.0f))));
-    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShaderSpotlight.fs");
+    objects.back()->setShaders("normalTextureShader.vs", "normalTextureShaderLight.fs");
     objects.back()->addTexture("..\\images\\wood_planks.jpg");
 
     //objects.push_back(std::make_unique<Sphere>(35, 22, true));
@@ -173,8 +173,9 @@ void App::DrawScene()
     light->SetPosition(10.0f, 0.0f, 0.0f);
 
     //glm::vec3 lightPos = light->GetPosition();
-    glm::vec3 lightPos = graphics.camera.getCameraPos();
-    glm::vec3 lightDir = graphics.camera.getCameraFront();
+    glm::vec3 cameraPos = graphics.camera.getCameraPos();
+    glm::vec3 cameraFront = graphics.camera.getCameraFront();
+    glm::vec3 dirLightDir = glm::vec3(-0.2f, -1.0f, -0.3f);
 
 	light->draw(trans, projection, view);
 
@@ -186,6 +187,6 @@ void App::DrawScene()
 
 		objects[i]->SetLightColor(&(light->GetLightColor()[0]));
         //objects[i]->draw(trans, projection, view, lightPos);
-        objects[i]->draw(trans, projection, view, lightPos, lightDir, 15.0f, 20.0f);
+        objects[i]->draw(trans, projection, view, dirLightDir, cameraPos, cameraFront, 15.0f, 20.0f);
     }
 }

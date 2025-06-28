@@ -137,7 +137,7 @@ public:
 		GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
 	}
 
-	void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view, glm::vec3& lightPos, glm::vec3& lightDir, float cutOffAngle, float outerCutoffAngle) {
+	void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view, glm::vec3& dirLightDir, glm::vec3& spotlightPos, glm::vec3& spotlightDir, float cutOffAngle, float outerCutoffAngle) {
 		DrawableType D = getType();
 		if (D == DrawableType::NORMALTEXTURE || D == DrawableType::TEXTURE) {
 			BindTextures();
@@ -154,16 +154,62 @@ public:
 		getShader()->setFloat("material.shininess", material.shininess);
 		getShader()->setInt("material.diffuse", 0);
 		getShader()->setInt("material.specular", 1);
-		getShader()->setFloat3("light.ambient", 0.2f, 0.2f, 0.2f);
-		getShader()->setFloat3("light.diffuse", 0.9f, 0.9f, 0.9f);
-		getShader()->setFloat3("light.specular", 1.0f, 1.0f, 1.0f);
-		getShader()->setFloat3("light.position", lightPos.x, lightPos.y, lightPos.z);
-		getShader()->setFloat3("light.direction", lightDir.x, lightDir.y, lightDir.z);
-		getShader()->setFloat("light.cutOff", glm::cos(glm::radians(cutOffAngle)));
-		getShader()->setFloat("light.outerCutOff", glm::cos(glm::radians(outerCutoffAngle)));
-		getShader()->setFloat("light.constant", 0.01f);
-		getShader()->setFloat("light.linear", 0.009f);
-		getShader()->setFloat("light.quadratic", 0.0302f);
+		
+		getShader()->setFloat3("dirlight.ambient", 0.2f, 0.2f, 0.2f);
+		getShader()->setFloat3("dirlight.diffuse", 0.9f, 0.9f, 0.9f);
+		getShader()->setFloat3("dirlight.specular", 1.0f, 1.0f, 1.0f);
+		getShader()->setFloat3("dirlight.direction", dirLightDir.x, dirLightDir.y, dirLightDir.z);
+
+		glm::vec3 pointLightPositions[] = {
+			glm::vec3(0.7f,  0.2f,  2.0f),
+			glm::vec3(2.3f, -3.3f, -4.0f),
+			glm::vec3(-4.0f,  2.0f, -12.0f),
+			glm::vec3(0.0f,  0.0f, -3.0f)
+		};
+
+		// point light 1
+		getShader()->setVec3("pointLights[0].position", pointLightPositions[0]);
+		getShader()->setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
+		getShader()->setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+		getShader()->setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
+		getShader()->setFloat("pointLights[0].constant", 1.0f);
+		getShader()->setFloat("pointLights[0].linear", 0.09f);
+		getShader()->setFloat("pointLights[0].quadratic", 0.032f);
+		// point light 2
+		getShader()->setVec3("pointLights[1].position", pointLightPositions[1]);
+		getShader()->setVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
+		getShader()->setVec3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
+		getShader()->setVec3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);
+		getShader()->setFloat("pointLights[1].constant", 1.0f);
+		getShader()->setFloat("pointLights[1].linear", 0.09f);
+		getShader()->setFloat("pointLights[1].quadratic", 0.032f);
+		// point light 3
+		getShader()->setVec3("pointLights[2].position", pointLightPositions[2]);
+		getShader()->setVec3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
+		getShader()->setVec3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
+		getShader()->setVec3("pointLights[2].specular", 1.0f, 1.0f, 1.0f);
+		getShader()->setFloat("pointLights[2].constant", 1.0f);
+		getShader()->setFloat("pointLights[2].linear", 0.09f);
+		getShader()->setFloat("pointLights[2].quadratic", 0.032f);
+		// point light 4
+		getShader()->setVec3("pointLights[3].position", pointLightPositions[3]);
+		getShader()->setVec3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
+		getShader()->setVec3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
+		getShader()->setVec3("pointLights[3].specular", 1.0f, 1.0f, 1.0f);
+		getShader()->setFloat("pointLights[3].constant", 1.0f);
+		getShader()->setFloat("pointLights[3].linear", 0.09f);
+		getShader()->setFloat("pointLights[3].quadratic", 0.032f);
+
+		getShader()->setVec3("spotLight.position", spotlightPos);
+		getShader()->setVec3("spotLight.direction", spotlightDir);
+		getShader()->setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
+		getShader()->setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
+		getShader()->setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+		getShader()->setFloat("spotLight.constant", 1.0f);
+		getShader()->setFloat("spotLight.linear", 0.09f);
+		getShader()->setFloat("spotLight.quadratic", 0.032f);
+		getShader()->setFloat("spotLight.cutOff", glm::cos(glm::radians(cutOffAngle)));
+		getShader()->setFloat("spotLight.outerCutOff", glm::cos(glm::radians(outerCutoffAngle)));
 
 
 		GLCall(glBindVertexArray(VAO));
