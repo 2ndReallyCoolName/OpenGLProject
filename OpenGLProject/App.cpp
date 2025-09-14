@@ -23,6 +23,13 @@ App::App(unsigned int screen_width, unsigned int screen_height, std::string titl
         glfwSetFramebufferSizeCallback(window, App::framebuffer_size_callback);
 		status = 0;
     }
+
+    dirLight = {
+        glm::vec3(0.0f, -1.0f, 0.0f), // direction
+		glm::vec3(0.1f, 0.1, 0.1), // ambient
+		glm::vec3(0.2f, 0.2f, 0.2f), // diffuse
+		glm::vec3(0.3f, 0.3f, 0.3f) // specular
+    };
 }
 
 App::~App()
@@ -41,11 +48,6 @@ int App::Init()
     }
 
 	graphics = Graphics(SCR_WIDTH, SCR_HEIGHT);
-
-    //objects.push_back(std::make_unique<Box>());
-    //objects.back()->setShaders("shader.vs", "shader.fs");
-    //objects.back()->addTexture("..\\images\\blue_ice.jpg");
-
 
     objects.push_back(std::make_unique<Box<DrawableType::NORMALTEXTURE>>(10, 10));
     objects.back()->setModel(std::move(glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(5.0f, 0.0f, -2.0)), -1.57f, glm::vec3(1.0f, 0.0f, 0.0f)), 0.5f, glm::vec3(0.0f, 1.0f, 0.0f))));
@@ -80,7 +82,32 @@ int App::Init()
     //objects.back()->setShaders("normalColorShader.vs", "normalColorShader.fs");
 
 
-	light = std::make_unique<Light>(1.0f, 1.0f, 1.0f);
+	lights.push_back(std::make_unique<Light>(1.0f, 1.0f, 1.0f));
+    lights[0]->SetPosition(5.0f, 4.0f, 1.0f);
+    lights[0]->setPointLight({ 
+        lights[0]->GetPosition(), // position
+        glm::vec3(0.1f, 0.1f, 0.1f), // ambient
+        glm::vec3(0.4f, 0.4f, 0.4f), // diffuse
+        glm::vec3(0.2f, 0.2f, 0.2f), // specular
+        1.0f, // constant
+        0.09f, // linear
+        0.032f, // quadratic
+     });
+
+    pointLights.push_back(lights[0]->getPointLight());
+
+    spotlight = {
+        graphics.camera.getCameraPos(), // position
+        graphics.camera.getCameraFront(), // direction
+        glm::vec3(0.1f, 0.1f, 0.1f), // ambient
+        glm::vec3(0.5f, 0.5f, 0.5f), // diffuse
+        glm::vec3(0.1f, 0.1f, 0.1f), // specular
+        1.0f, // constant
+        0.09f, // linear
+        0.032f, // quadratic
+        glm::cos(glm::radians(3.5f)), // cutoff
+        glm::cos(glm::radians(7.0f)) // outerCutoff
+    };
 
 	return 0;
 }
@@ -157,6 +184,9 @@ void App::ProcessInput()
             objects[i]->setViewPos(graphics.camera.getCameraPos());
         }
     }
+
+    spotlight.position = graphics.camera.getCameraPos(); // position
+    spotlight.direction = graphics.camera.getCameraFront(); // direction
 }
 
 void App::DrawScene()
@@ -168,16 +198,10 @@ void App::DrawScene()
 
     projection = glm::perspective(glm::radians(graphics.camera.getFov()), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
-    glm::mat4 trans = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 0.0f, 0.0f));
+    /*glm::mat4 trans = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 0.0f, 0.0f));*/
 
-    light->SetPosition(10.0f, 0.0f, 0.0f);
-
-    //glm::vec3 lightPos = light->GetPosition();
-    glm::vec3 cameraPos = graphics.camera.getCameraPos();
-    glm::vec3 cameraFront = graphics.camera.getCameraFront();
-    glm::vec3 dirLightDir = glm::vec3(-0.2f, -1.0f, -0.3f);
-
-	light->draw(trans, projection, view);
+    glm::mat4 trans = glm::mat4(1.0f);
+	lights[0]->draw(trans, projection, view);
 
     for (int i = 0; i < objects.size(); i++)
     {
@@ -185,8 +209,8 @@ void App::DrawScene()
 
         trans = glm::rotate(trans, 0.8f*(float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 0.5f));
 
-		objects[i]->SetLightColor(&(light->GetLightColor()[0]));
-        //objects[i]->draw(trans, projection, view, lightPos);
-        objects[i]->draw(trans, projection, view, dirLightDir, cameraPos, cameraFront, 15.0f, 20.0f);
+		objects[i]->SetLightColor(&(lights[0]->GetLightColor()[0]));
+        
+        objects[i]->draw(trans, projection, view, dirLight, spotlight, pointLights);
     }
 }

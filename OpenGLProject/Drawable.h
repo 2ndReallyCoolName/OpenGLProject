@@ -3,6 +3,7 @@
 #include "DrawableBase.h"
 #include "GLErrorHandling.h"
 #include "Shader.h"
+#include "ObjectStructs.h"
 
 struct Material {
 	float shininess = 32.0f;
@@ -137,7 +138,7 @@ public:
 		GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
 	}
 
-	void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view, glm::vec3& dirLightDir, glm::vec3& spotlightPos, glm::vec3& spotlightDir, float cutOffAngle, float outerCutoffAngle) {
+	void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view, DirectionLight& dirLight, SpotLight& spotLight, std::vector<PointLight*>& pointLights) {
 		DrawableType D = getType();
 		if (D == DrawableType::NORMALTEXTURE || D == DrawableType::TEXTURE) {
 			BindTextures();
@@ -154,67 +155,15 @@ public:
 		getShader()->setFloat("material.shininess", material.shininess);
 		getShader()->setInt("material.diffuse", 0);
 		getShader()->setInt("material.specular", 1);
-		
-		getShader()->setFloat3("dirlight.ambient", 0.2f, 0.2f, 0.2f);
-		getShader()->setFloat3("dirlight.diffuse", 0.9f, 0.9f, 0.9f);
-		getShader()->setFloat3("dirlight.specular", 1.0f, 1.0f, 1.0f);
-		getShader()->setFloat3("dirlight.direction", dirLightDir.x, dirLightDir.y, dirLightDir.z);
 
-		glm::vec3 pointLightPositions[] = {
-			glm::vec3(0.7f,  0.2f,  2.0f),
-			glm::vec3(2.3f, -3.3f, -4.0f),
-			glm::vec3(-4.0f,  2.0f, -12.0f),
-			glm::vec3(0.0f,  0.0f, -3.0f)
-		};
-
-		// point light 1
-		getShader()->setVec3("pointLights[0].position", pointLightPositions[0]);
-		getShader()->setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
-		getShader()->setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
-		getShader()->setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
-		getShader()->setFloat("pointLights[0].constant", 1.0f);
-		getShader()->setFloat("pointLights[0].linear", 0.09f);
-		getShader()->setFloat("pointLights[0].quadratic", 0.032f);
-		// point light 2
-		getShader()->setVec3("pointLights[1].position", pointLightPositions[1]);
-		getShader()->setVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
-		getShader()->setVec3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
-		getShader()->setVec3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);
-		getShader()->setFloat("pointLights[1].constant", 1.0f);
-		getShader()->setFloat("pointLights[1].linear", 0.09f);
-		getShader()->setFloat("pointLights[1].quadratic", 0.032f);
-		// point light 3
-		getShader()->setVec3("pointLights[2].position", pointLightPositions[2]);
-		getShader()->setVec3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
-		getShader()->setVec3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
-		getShader()->setVec3("pointLights[2].specular", 1.0f, 1.0f, 1.0f);
-		getShader()->setFloat("pointLights[2].constant", 1.0f);
-		getShader()->setFloat("pointLights[2].linear", 0.09f);
-		getShader()->setFloat("pointLights[2].quadratic", 0.032f);
-		// point light 4
-		getShader()->setVec3("pointLights[3].position", pointLightPositions[3]);
-		getShader()->setVec3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
-		getShader()->setVec3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
-		getShader()->setVec3("pointLights[3].specular", 1.0f, 1.0f, 1.0f);
-		getShader()->setFloat("pointLights[3].constant", 1.0f);
-		getShader()->setFloat("pointLights[3].linear", 0.09f);
-		getShader()->setFloat("pointLights[3].quadratic", 0.032f);
-
-		getShader()->setVec3("spotLight.position", spotlightPos);
-		getShader()->setVec3("spotLight.direction", spotlightDir);
-		getShader()->setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
-		getShader()->setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-		getShader()->setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
-		getShader()->setFloat("spotLight.constant", 1.0f);
-		getShader()->setFloat("spotLight.linear", 0.09f);
-		getShader()->setFloat("spotLight.quadratic", 0.032f);
-		getShader()->setFloat("spotLight.cutOff", glm::cos(glm::radians(cutOffAngle)));
-		getShader()->setFloat("spotLight.outerCutOff", glm::cos(glm::radians(outerCutoffAngle)));
-
+		setDirLight(dirLight);
+		setPointLight(pointLights);
+		setSpotLight(spotLight);
 
 		GLCall(glBindVertexArray(VAO));
 		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
 		GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
+
 	}
 
 	void SetColor(float r, float g, float b, float a) {
@@ -228,6 +177,38 @@ public:
 
 	void setMaterial(Material& mat) {
 		material = mat;
+	}
+
+	void setDirLight(DirectionLight& dirLight) {
+		getShader()->setVec3("dirLight.ambient", dirLight.ambient);
+		getShader()->setVec3("dirLight.diffuse", dirLight.diffuse);
+		getShader()->setVec3("dirLight.specular", dirLight.specular);
+		getShader()->setVec3("dirLight.direction", dirLight.direction);
+	}
+
+	void setPointLight(std::vector<PointLight*>& pointLights) {
+		for (size_t i = 0; i < pointLights.size(); ++i) {
+			getShader()->setVec3("pointLights[" + std::to_string(i) + "].position", pointLights[i]->position);
+			getShader()->setVec3("pointLights[" + std::to_string(i) + "].ambient", pointLights[i]->ambient);
+			getShader()->setVec3("pointLights[" + std::to_string(i) + "].diffuse", pointLights[i]->diffuse);
+			getShader()->setVec3("pointLights[" + std::to_string(i) + "].specular", pointLights[i]->specular);
+			getShader()->setFloat("pointLights[" + std::to_string(i) + "].constant", pointLights[i]->constant);
+			getShader()->setFloat("pointLights[" + std::to_string(i) + "].linear", pointLights[i]->linear);
+			getShader()->setFloat("pointLights[" + std::to_string(i) + "].quadratic", pointLights[i]->quadratic);
+		}
+	}
+
+	void setSpotLight(SpotLight& spotLight) {
+		getShader()->setVec3("spotLight.position", spotLight.position);
+		getShader()->setVec3("spotLight.direction", spotLight.direction);
+		getShader()->setVec3("spotLight.ambient", spotLight.ambient);
+		getShader()->setVec3("spotLight.diffuse", spotLight.diffuse);
+		getShader()->setVec3("spotLight.specular", spotLight.specular);
+		getShader()->setFloat("spotLight.constant", spotLight.constant);
+		getShader()->setFloat("spotLight.linear", spotLight.linear);
+		getShader()->setFloat("spotLight.quadratic", spotLight.quadratic);
+		getShader()->setFloat("spotLight.cutOff", glm::cos(glm::radians(spotLight.cutoff)));
+		getShader()->setFloat("spotLight.outerCutOff", glm::cos(glm::radians(spotLight.outerCutoff)));
 	}
 
 protected:

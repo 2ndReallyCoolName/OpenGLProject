@@ -11,12 +11,32 @@ Light::Light(float r, float g, float b)
 	color[1] = g;
 	color[2] = b;
 
+	pointLight = {
+		{ 0.0f, 0.0f, 0.0f },
+		{ 0.05f, 0.05f, 0.05f }, // ambient
+		{ 0.8f, 0.8f, 0.8f }, // diffuse
+		{ 1.0f, 1.0f, 1.0f }, // specular
+		1.0f, // constant
+		0.09f, // linear
+		0.032f // quadratic
+	};
+
 	Initialize();
 }
 
 Light::Light()
 	: Sphere< DrawableType::NORMAL>(30, 30)
 {
+	pointLight = {
+		{ 0.0f, 0.0f, 0.0f },
+		{ 0.05f, 0.05f, 0.05f }, // ambient
+		{ 0.8f, 0.8f, 0.8f }, // diffuse
+		{ 1.0f, 1.0f, 1.0f }, // specular
+		1.0f, // constant
+		0.09f, // linear
+		0.032f // quadratic
+	};
+
 	Initialize();
 }
 

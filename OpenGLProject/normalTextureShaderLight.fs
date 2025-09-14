@@ -94,10 +94,14 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir){
 
     return (ambient + diffuse + specular);
 }
-
+ 
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir){
     
+    if(light.constant == 0){
+        return   vec3(0.0f, 0.0f, 0.0f);
+    }
+
     float distance = length(light.position - fragPos);
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * distance * distance);
 
@@ -122,8 +126,8 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {
 
     vec3 lightDir = normalize( light.position - fragPos );
 
-    float theta = dot(lightDir, normalize(-light.direction));
-    float epsilon = light.cutOff - light.outerCutOff;
+    float theta = dot(lightDir, normalize(light.direction));
+    float epsilon = -light.outerCutOff + light.cutOff;
     float intensity = clamp((theta - light.outerCutOff)/epsilon, 0.0, 1.0);
 
     vec3 ambient  = attenuation * light.ambient * vec3(texture(material.diffuse, TexCoord));

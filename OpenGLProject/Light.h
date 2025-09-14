@@ -8,9 +8,11 @@ public:
 	Light();
 	void draw(glm::mat4& transformation, glm::mat4& projection, glm::mat4& view) override;
 	std::vector<float> GetLightColor() { return color; }
-	glm::vec3& GetPosition() { return position; }
+	glm::vec3& GetPosition() { return pointLight.position; }
+
 	void SetPosition(float x, float y, float z) { 
-		position = glm::vec3(x, y, z); 
+		pointLight.position = glm::vec3(x, y, z); 
+		this->setModel(std::move(glm::translate(glm::mat4(1.0f), pointLight.position)));
 	}
 
 	void SetLightColor(float r, float g, float b) {
@@ -28,11 +30,18 @@ public:
 		pShader->setFloat3("viewPos", viewPos.x, viewPos.y, viewPos.z);
 	}
 
+	void setPointLight(PointLight&& _pointLight) {
+		pointLight = std::move(_pointLight);
+	}
+
+	PointLight* getPointLight() {
+		return &pointLight;
+	}
+
 private:
 	void Initialize();
 private:
-
-	glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
+	PointLight pointLight;
 private:
 	using Drawable<Sphere<DrawableType::NORMAL>>::vertices;
 	using Drawable<Sphere<DrawableType::NORMAL>>::indices;

@@ -156,8 +156,10 @@
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="GLErrorHandling.h" />
+    <ClInclude Include="glIncludesBase.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="ObjectStructs.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="stb_image.h" />

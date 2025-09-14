@@ -50,5 +50,8 @@ private:
 
 private:
 	std::vector<std::unique_ptr<class DrawableBase>> objects;
-	std::unique_ptr<Light> light;
+	std::vector<std::unique_ptr<Light>> lights;
+	std::vector<PointLight*> pointLights;
+	SpotLight spotlight;
+	DirectionLight dirLight;
 };
