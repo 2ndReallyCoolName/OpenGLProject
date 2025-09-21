@@ -187,7 +187,7 @@ public:
 	}
 
 	void setPointLight(std::vector<PointLight*>& pointLights) {
-		for (size_t i = 0; i < pointLights.size(); ++i) {
+		for (size_t i = 0; i < pointLights.size(); i++) {
 			getShader()->setVec3("pointLights[" + std::to_string(i) + "].position", pointLights[i]->position);
 			getShader()->setVec3("pointLights[" + std::to_string(i) + "].ambient", pointLights[i]->ambient);
 			getShader()->setVec3("pointLights[" + std::to_string(i) + "].diffuse", pointLights[i]->diffuse);

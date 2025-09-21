@@ -82,19 +82,32 @@ int App::Init()
     //objects.back()->setShaders("normalColorShader.vs", "normalColorShader.fs");
 
 
-	lights.push_back(std::make_unique<Light>(1.0f, 1.0f, 1.0f));
+	lights.push_back(std::make_unique<Light>(1.0f, 0.0f, 1.0f));
     lights[0]->SetPosition(5.0f, 4.0f, 1.0f);
     lights[0]->setPointLight({ 
         lights[0]->GetPosition(), // position
         glm::vec3(0.1f, 0.1f, 0.1f), // ambient
-        glm::vec3(0.4f, 0.4f, 0.4f), // diffuse
+        glm::vec3(0.8f, 0.0f, 0.8f), // diffuse
         glm::vec3(0.2f, 0.2f, 0.2f), // specular
         1.0f, // constant
         0.09f, // linear
         0.032f, // quadratic
      });
 
+    lights.push_back(std::make_unique<Light>(0.0f, 1.0f, 1.0f));
+    lights[1]->SetPosition(-5.0f, 2.0f, -1.0f);
+    lights[1]->setPointLight({
+        lights[1]->GetPosition(), // position
+        glm::vec3(0.1f, 0.1f, 0.1f), // ambient
+        glm::vec3(0.0f, 0.7f, 0.7f), // diffuse
+        glm::vec3(0.2f, 0.2f, 0.2f), // specular
+        1.0f, // constant
+        0.09f, // linear
+        0.032f, // quadratic
+        });
+
     pointLights.push_back(lights[0]->getPointLight());
+    pointLights.push_back(lights[1]->getPointLight());
 
     spotlight = {
         graphics.camera.getCameraPos(), // position
@@ -202,6 +215,7 @@ void App::DrawScene()
 
     glm::mat4 trans = glm::mat4(1.0f);
 	lights[0]->draw(trans, projection, view);
+    lights[1]->draw(trans, projection, view);
 
     for (int i = 0; i < objects.size(); i++)
     {
